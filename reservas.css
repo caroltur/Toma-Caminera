@@ -1,0 +1,71 @@
+
+.contenido_body{
+  width: 60%;
+  margin: auto;
+}
+.contenido_body header {
+    background-color: #30801e;
+    color: white;
+    padding: 10px 20px 1px 20px ;
+}
+
+.contenido_body h1 {
+    margin: 0;
+    font-size: 28px;
+}
+
+.contenido_body section {
+    background-color: white;
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 600px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.contenido_body h2 {
+    color: #5E1A75;
+}
+.contenido_body .reserva-info {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #e8f5e9;
+    border-left: 5px solid #30801e;
+    border-radius: 5px;
+    text-align: left;
+}
+
+.contenido_body .cuentas, .whatsapp {
+    background: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+.contenido_body .whatsapp a {
+    color: #30801e;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.contenido_body #reservas{
+    margin: auto;
+    margin-top: 2%;
+    box-shadow: 0 0 15px 2px black;
+}
+
+footer {
+  background-color: #4372ba;
+  color: white;
+  padding: 10px;
+  margin-top: 5%;
+  width: 100%;
+}
+.movile .contenido_body{
+  width: 90% ;
+}
+.movile .reserva-info{
+  box-shadow: 5px 5px 9px 2px black;
+  border-top: 2px solid black;
+}
+

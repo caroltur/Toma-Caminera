@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rutas Turísticas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="cabecera.css">
+    <link rel="stylesheet" href="styles.css">
+    
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg encabezado">
+        <div class="container-fluid">
+            <!-- Botón menú hamburguesa -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuNav">
+                <span>&#9776;</span> <!-- Ícono de hamburguesa -->
+            </button>
+
+            <!-- Menú -->
+            <div class="collapse navbar-collapse" id="menuNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 menu">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Rutas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="inscripciones.html">Inscripciones</a></li>
+                    <li class="nav-item"><a class="nav-link" href="reservas.html">Reservas</a></li>
+                </ul>
+            </div>
+
+            <!-- Título -->
+            <div id="titulo" class="titulo">
+                <h1 class="h4">Carolina Mágica</h1>
+                <p class="m-0">Senderos y Cascadas</p>
+            </div>
+        </div>
+    </nav>
+    <div class="contenido_body">
+
+    <section id="rutas">
+        <h2>Nuestras Rutas</h2>
+        <div class="rutas-container" id="rutas-container">
+            <!-- Aquí se generarán las rutas dinámicamente -->
+        </div>
+    </section>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-contenido" id="modalContenido">
+            <span class="cerrar" onclick="cerrarModal()">&times;</span>
+            <h2 id="modal-titulo"></h2>
+            <p id="modal-descripcion"></p>
+            <p><strong>Distancia:</strong> <span id="modal-distancia"></span></p>
+            <p><strong>Dificultad:</strong> <span id="modal-dificultad"></span></p>
+            <p><strong>Duración:</strong> <span id="modal-duracion"></span></p>
+            <!-- Carrusel de imágenes -->
+            <div class="carousel" id="modal-imagenes"></div>
+        </div>
+    </div>
+    </div>
+    <footer>
+        <p>&copy; 2025 Turismo de Aventura | Carolina del Príncipe</p>
+    </footer>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const menuNav = document.getElementById("menuNav");
+            const titulo = document.getElementById("titulo");
+
+            menuNav.addEventListener("show.bs.collapse", function () {
+                titulo.style.display = "none"; // Oculta el título cuando el menú se despliega
+            });
+
+            menuNav.addEventListener("hide.bs.collapse", function () {
+                titulo.style.display = "block"; // Muestra el título cuando el menú se oculta
+            });
+        });
+    </script>
+
+     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            function detectarDispositivo() {
+                const userAgent = navigator.userAgent.toLowerCase();
+                const body = document.body;
+
+                if (/mobile|android|iphone|ipod|blackberry|opera mini|iemobile|windows phone/i.test(userAgent)) {
+                    body.classList.add("movile"); // Para celulares
+                }  else {
+                    body.classList.add("pc"); // Para computadoras
+                }
+            }
+
+            detectarDispositivo();
+        });
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

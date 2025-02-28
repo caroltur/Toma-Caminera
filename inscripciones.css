@@ -1,0 +1,173 @@
+/* Estilos generales */
+
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Centra el contenido horizontalmente */
+  min-height: 100vh; /* Asegura que el cuerpo ocupe al menos el 100% de la altura de la pantalla */
+ 
+}
+ .contenido_body #formulario_box { display: none; margin-top: 20px; }
+
+  .contenido_body #codigo_box, #formulario_box{
+    padding: 2%;
+    box-shadow: 0 0 25px 10px black;
+    color: black !important;
+    border-radius: 10px;
+    width: 60%;
+    margin: auto;
+  }
+  
+  .contenido_body .container {
+    background-color: #fff; /* Color de fondo del contenedor del formulario */
+    padding: 20px;
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    width: 1500px; /* Ancho del contenedor */
+  }
+
+  
+  
+  .contenido_body h1 {
+    text-align: center; /* Centra el título */
+    color: #333; /* Color del título */
+    margin-bottom: 20px; /* Espacio inferior */
+  }
+  
+  /* Estilos del formulario */
+  .contenido_body label {
+    display: block; /* Etiquetas en bloque (una debajo de otra) */
+    margin-bottom: 5px; /* Espacio inferior para las etiquetas */
+    color: #555; /* Color de las etiquetas */
+  }
+  
+  .contenido_body input,  .contenido_body select,
+  .contenido_body textarea {
+    width: calc(100% - 18px); /* Ancho completo menos el padding y el borde */
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc; /* Borde */
+    border-radius: 4px; /* Bordes redondeados */
+    box-sizing: border-box; /* Incluye el padding y el borde en el ancho total */
+  }
+  
+  .contenido_body textarea {
+    height: 120px; /* Altura predeterminada para el área de texto */
+  }
+  
+  .contenido_body button {
+    background-color: #007bff; /* Color de fondo del botón */
+    color: #fff; /* Color del texto del botón */
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Transición suave para el color de fondo */
+  }
+  
+  .contenido_body button:hover {
+    background-color: #0056b3; /* Color de fondo al pasar el cursor */
+  }
+  
+  /* Estilos para mensajes de error */
+  .contenido_body .error-message {
+    color: #dc3545; /* Color rojo para los mensajes de error */
+    margin-top: 5px;
+  }
+  
+  /* Estilos para el campo de cédula y el botón de búsqueda */
+  .contenido_body #codigo {
+    width: calc(100% - 60px); /* Ancho del campo de cédula */
+    display: inline-block;
+  }
+  
+  .contenido_body #buscar {
+    width: 100px; /* Ancho del botón de búsqueda */
+    margin-left: 8px;
+  }
+  
+  /* Estilos para el formulario cuando está oculto */
+  .contenido_body #formulario[style*="display: none;"] {
+    opacity: 0; /* Opacidad 0 para que no se vea */
+    pointer-events: none; /* Evita que se pueda interactuar con el formulario */
+    transition: opacity 0.3s ease; /* Transición suave para la opacidad */
+  }
+
+  
+
+footer {
+  background-color: #4372ba;
+  color: white;
+  padding: 10px;
+  margin-top: 5%;
+  width: 100%;
+}
+/*
+@media screen and (max-width: 1024px) {
+  .container {
+    width: 90%;
+  }
+
+  .menu {
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+
+  .menu a {
+    font-size: 16px;
+    padding: 8px 10px;
+  }
+
+  #codigo, #buscar {
+    width: 100%;
+    margin: 5px 0;
+  }
+}
+
+@media (max-width: 768px) {
+  
+  #codigo_box{
+      width: 90% !important;
+      height: 20vh;
+      
+    }
+    #formulario_box{
+      width: 90% !important;
+    }
+    
+    
+    .menu a{
+      font-size: 5vw;
+    }
+    header>h1{
+      font-size: 4.5vw;
+    }
+    #formulario_box label{
+      font-size: 1vw !important;
+      text-align: left;
+    }
+    #condicionSalud{
+      font-size: 1vw;
+    }
+    footer p{
+      font-size: 1vw;
+    }
+    #enviar{
+      width: 100%;
+      padding: 2%;
+      font-size: 4vw;
+    }
+    select option{
+      font-size: 1.3vw;
+    }
+}*/
+.movile #codigo_box, .movile #formulario_box{
+  width: 90%;
+}
+.movile select option{
+      font-size: 3.6vw;
+    }
+.movile .contenido_body button{
+  width: 100%;
+}

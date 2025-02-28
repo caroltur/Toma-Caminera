@@ -1,0 +1,52 @@
+body {
+    font-family: Arial, sans-serif;
+    background-image: url("barnr.png"); /* Color de fondo general */
+    background-repeat: none;
+    background-size: 100% 100%;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+ .encabezado {
+    background-color: #30801e; /* Verde oscuro */
+    color: white;
+    padding: 15px 20px !important;
+    width: 100%;
+}
+
+.encabezado .menu a {
+    color: white;
+    font-weight: bold !important;
+    font-size: 1.2vw;
+    text-decoration: none !important;
+    padding: 10px 15px !important;
+    transition: background 0.3s !important;
+}
+
+.encabezado .menu a:hover {
+    background-color: #5E1A75; /* Morado */
+    border-radius: 5px !important;
+}
+
+.encabezado .navbar-toggler {
+    border: none;
+    background: none;
+    color: white;
+    font-size: 24px !important;
+}
+
+/* Ajustes para móviles */
+.movile .encabezado .titulo {
+    text-align: center;
+    margin-top: 10px !important;
+    
+}
+.movile .nav-link{
+    font-size: 5vw !important;
+}
+
+.movile footer{
+    font-size: 4vw;
+}

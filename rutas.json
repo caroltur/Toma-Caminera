@@ -1,0 +1,215 @@
+{
+    "rutas": [
+        {  
+          "ruta": "Cascadas de la María",
+          "ubicacion": "Vereda La Herradura, a 10 minutos de la cabecera municipal",
+          "descripcion": "Ruta ecológica donde se pueden visitar seis cascadas, practicar rivering y adentrarse en un bosque altoandino con gran riqueza natural. Ideal para aficionados de cascadas, botánica y avistamiento de aves.",
+          "atractivos": [
+            "Cadena de Cascadas de 'La María'",
+            "Avistamiento de aves",
+            "Fauna y flora nativas",
+            "Mirador La María"
+          ],
+          "recorrido": {
+            "dificultad": "Grado 2.5 con pendiente inclinada",
+            "distancia": "3 km",
+            "duracion": "3 horas"
+          },
+          "imagenes": [
+            "img/cascadas1.jpg",
+            "img/cascadas2.jpg",
+            "img/cascadas3.jpg",
+            "img/verAlbum.png"
+          ],
+          "album":"https://photos.app.goo.gl/WXf9F1x6o6PmL5YT8"
+        },
+        {  
+          "ruta": "Anillo vial",
+          "ubicacion": "Vereda La Herradura, a 10 minutos de la cabecera municipal",
+          "descripcion": "Ruta ecológica donde se pueden visitar seis cascadas, practicar rivering y adentrarse en un bosque altoandino con gran riqueza natural. Ideal para aficionados de cascadas, botánica y avistamiento de aves.",
+          "atractivos": [
+            "Cadena de Cascadas de 'La María'",
+            "Avistamiento de aves",
+            "Fauna y flora nativas",
+            "Mirador La María"
+          ],
+          "recorrido": {
+            "dificultad": "Grado 2.5 con pendiente inclinada",
+            "distancia": "3 km",
+            "duracion": "3 horas"
+          },
+          "imagenes": [
+            "img/cascadas1.jpg",
+            "img/cascadas2.jpg",
+            "img/cascadas3.jpg",
+            "img/verAlbum.png"
+          ],
+          "album":"https://photos.app.goo.gl/WXf9F1x6o6PmL5YT8"
+        },
+        {  
+          "ruta": "Pinera de Canasto",
+          "ubicacion": "Vereda La Herradura, a 10 minutos de la cabecera municipal",
+          "descripcion": "Ruta ecológica donde se pueden visitar seis cascadas, practicar rivering y adentrarse en un bosque altoandino con gran riqueza natural. Ideal para aficionados de cascadas, botánica y avistamiento de aves.",
+          "atractivos": [
+            "Cadena de Cascadas de 'La María'",
+            "Avistamiento de aves",
+            "Fauna y flora nativas",
+            "Mirador La María"
+          ],
+          "recorrido": {
+            "dificultad": "Grado 2.5 con pendiente inclinada",
+            "distancia": "3 km",
+            "duracion": "3 horas"
+          },
+          "imagenes": [
+            "img/cascadas1.jpg",
+            "img/cascadas2.jpg",
+            "img/cascadas3.jpg",
+            "img/verAlbum.png"
+          ],
+          "album":"https://photos.app.goo.gl/WXf9F1x6o6PmL5YT8"
+        },
+        {
+          "ruta": "Ruta de la Energía",
+          "ubicacion": "La Herradurita - embalse de Troneras",
+          "descripcion": "Ruta de senderismo con historia y paisajes espectaculares. Se recorre un antiguo camino usado por los indígenas Nutabes y la colonia española, atravesando bosques de pinos hasta llegar al embalse de Troneras, donde se disfruta de un paseo en lancha y se finaliza en un lugar llamado 'La Isla'.",
+          "atractivos": [
+            "Embalse Troneras",
+            "Bosques de pinos (Pinus patula)",
+            "El Salto de Guadalupe (mirador del cañón del Río Guadalupe)"
+          ],
+          "recorrido": {
+            "dificultad": "Grado 2.5",
+            "distancia": "10 km",
+            "duracion": "5 horas"
+          },
+          "imagenes": [
+            "img/cascadas1.jpg",
+            "img/cascadas2.jpg",
+            "img/cascadas3.jpg",
+            "img/verAlbum.png"
+          ],
+          "album":"https://photos.app.goo.gl/WXf9F1x6o6PmL5YT8"
+        },
+        {
+            "ruta": "Cascada la Holanda",
+            "ubicacion": "Santa Gertrudis",
+            "descripcion": "Esta experiencia lo incluye todo. La aventura inicia con un paseo en bote por el embalse de Troneras, luego un senderismo de grado medio con mágicos miradores desde donde verás paisajes que te dejarán sin palabras. Después de 3 km de recorrido por sendero y un poco de rivering, llegarás a la cascada más alta del municipio con una caída aproximada de 70 metros. Para terminar, disfrutarás del agua refrescante del charco El Cañal para dejar el cansancio atrás y regresar a la cabecera municipal.",
+            "atractivos": [
+              "Cascada la Holanda",
+              "Miradores",
+              "Represa de Troneras",
+              "Charcos del Cañal"
+            ],
+            "recorrido": {
+              "dificultad": "Ruta nivel 2.5",
+              "distancia": "6 km",
+              "duracion": "5 horas"
+            },
+          "imagenes": [
+            "img/cascadas1.jpg",
+            "img/cascadas2.jpg",
+            "img/cascadas3.jpg",
+            "img/verAlbum.png"
+          ],
+          "album":"https://photos.app.goo.gl/WXf9F1x6o6PmL5YT8"
+        },
+       
+        {
+            "ruta": "Las Cavernas",
+            "ubicacion": "Vereda la Vega",
+            "descripcion": "¿Lo tuyo es la aventura? Realiza espeleolismo, torrentismo y senderismo en un mismo recorrido lleno de emoción y adrenalina. Esta ruta te ofrece una verdadera conexión con la naturaleza, adentrándote en el seno de la tierra, enfrentando tus miedos, y descubriéndote a ti mismo en el interior de 'Las Cavernas'.",
+            "atractivos": [
+              "Incursión en organales",
+              "Sendero de bosque nativo premontano",
+              "Fauna y flora nativos"
+            ],
+            "recorrido": {
+              "niveles": ["Bajo", "Medio", "Alto"],
+              "distancia": "<3 km",
+              "duracion": "3:30 horas"
+            },
+          "imagenes": [
+            "img/cascadas1.jpg",
+            "img/cascadas2.jpg",
+            "img/cascadas3.jpg",
+            "img/verAlbum.png"
+          ],
+          "album":"https://photos.app.goo.gl/WXf9F1x6o6PmL5YT8"
+        },
+        {
+            "ruta": "Cascada Escondida",
+            "ubicacion": "Vereda Claritas",
+            "descripcion": "Visita un atractivo natural maravilloso. Recorre un sendero ecológico lleno de naturaleza en el cual podrás conocer la vereda Claritas, su historia y su gente. Conoce el Río Guadalupe, disfruta del día en aguas cristalinas y recorre el paisaje mientras te encuentras por sorpresa con una cascada en medio del bosque.",
+            "atractivos": [
+              "Camino real: Camino tradicional de arriería de la región.",
+              "Río Guadalupe: La fuente fluvial más importante del municipio, afluente del embalse de Troneras.",
+              "Cascada Escondida: Un lugar lleno de diversidad de fauna y flora."
+            ],
+            "recorrido": {
+              "tipo": "Senderismo grado 4.0",
+              "distancia": "17 km",
+              "duracion": "7 horas"
+            },
+          "imagenes": [
+            "img/cascadas1.jpg",
+            "img/cascadas2.jpg",
+            "img/cascadas3.jpg",
+            "img/verAlbum.png"
+          ],
+          "album":"https://photos.app.goo.gl/WXf9F1x6o6PmL5YT8"
+        },
+        {
+            "ruta": "La Chorrera",
+            "ubicacion": "La Herradurita",
+            "descripcion": "Historias, paisajes, naturaleza y una cascada, esta ruta te ofrece lo mejor de Carolina del Príncipe. La ruta inicia en la cabecera municipal donde después de recorrer algunas calles, tomarás un sendero de arriería, verás paisajes y bosques llenos de magia, solo para llegar luego a una cascada en la que podrás refrescarte después de tan largo camino.",
+            "atractivos": [
+              "Cascada la Chorrera",
+              "Camino de arriería",
+              "Represa de Tronerás",
+              "Miradores"
+            ],
+            "recorrido": {
+              "dificultad": 3.5,
+              "distancia": "13 km - 8 km",
+              "duracion": "7 horas"
+            },
+          "imagenes": [
+            "img/cascadas1.jpg",
+            "img/cascadas2.jpg",
+            "img/cascadas3.jpg",
+            "img/verAlbum.png"
+          ],
+          "album":"https://photos.app.goo.gl/WXf9F1x6o6PmL5YT8"
+        },
+        {
+            "ruta": "Charco Carraña",
+            "ubicacion": "Vereda Guanacas, Carolina del Príncipe",
+            "descripcion": "Los verdes campos de la vereda Guanacas albergan una maravilla natural sin precedentes: la quebrada La Guanacona, con su cause de aguas cristalinas que se abren paso a través de valles y bosques exuberantes. En este entorno se encuentra Charco Carraña, el más grande del municipio y uno de los más importantes del departamento de Antioquia.",
+            "atractivos": [
+              "Charco Carraña",
+              "Rivering sobre la Guanacona",
+              "Fauna y flora nativa",
+              "Sendero ecológico",
+              "Mirador Alto el Público"
+            ],
+            "recorrido": {
+              "dificultad": "Grado 4.5",
+              "distancia": "19 km",
+              "duracion": "8 horas"
+            },
+          "imagenes": [
+            "img/cascadas1.jpg",
+            "img/cascadas2.jpg",
+            "img/cascadas3.jpg",
+            "img/verAlbum.png"
+          ],
+          "album":"https://photos.app.goo.gl/WXf9F1x6o6PmL5YT8"
+          }
+        
+          
+          
+      ]
+      
+  }
+  

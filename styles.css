@@ -1,0 +1,147 @@
+
+
+.contenido_body header {
+    background: #30801e;
+    color: white;
+    padding: 10px 20px 1px 20px ;
+}
+
+.contenido_body section {
+    margin: 20px;
+}
+
+.contenido_body .rutas-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columnas */
+    gap: 20px; /* Espaciado entre elementos */
+    justify-items: center; /* Centra los elementos en la columna */
+}
+
+/* Estilos para los títulos de cada sección */
+.contenido_body .titulo-seccion {
+    grid-column: span 3; /* El título ocupa las 3 columnas */
+    text-align: center;
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #30801e;
+    margin: 20px 0; /* Espaciado superior e inferior */
+}
+
+.contenido_body .ruta {
+    max-width: 300px; /* Ajustar el tamaño */
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background: #f9f9f9;
+    width: 28vw;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+.contenido_body .ruta p{
+    text-align: justify;
+}
+.contenido_body .ruta:hover{
+    scale: 1.02;
+}
+.contenido_body .fila {
+    display: flex;
+    justify-content: center; /* Centrar elementos */
+    gap: 20px; /* Espaciado entre elementos */
+    margin-bottom: 20px;
+}
+
+.contenido_body h2 {
+    text-align: center;
+    width: 100%;
+    font-size: 1.5em;
+    color: #30801e;
+    margin-top: 30px;
+}
+.contenido_body button {
+    background: #5E1A75;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.contenido_body button:hover {
+    background: #4372ba;
+}
+
+/* Estilos para la ventana modal */
+/* Fondo del modal */
+.contenido_body .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.479);
+    justify-content: center;
+    align-items: center;
+}
+
+.contenido_body .modal-contenido {
+    background: rgb(247, 247, 247);
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    margin: auto;
+    position: relative;
+    top: 10%;
+    box-shadow: inset 0 0 5px 5px rgb(88, 88, 88);
+}
+
+.contenido_body .cerrar {
+    float: right;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.contenido_body .carousel {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    overflow-x: auto;
+    justify-items: center;
+    gap: 10px;
+}
+
+.contenido_body .imagen-modal {
+    
+    width: 15vw;
+    height: 20vw;
+    border-radius: 5px;
+    box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.733);
+    border: 2px solid rgb(255, 255, 255);
+}
+.contenido_body .imagen-modal:nth-child(4){
+    border: 2px solid rgb(15, 15, 15);
+    cursor: pointer;
+}
+
+/* Estilos para el menú */
+
+footer {
+    background-color: #4372ba;
+    color: white;
+    padding: 10px;
+    margin-top: 20px;
+}
+
+.movile .rutas-container{
+    display: flex;
+    flex-direction: column;
+}
+.movile .ruta{
+    width: 100%;
+    margin: auto;
+}
+.movile .modal-contenido{
+    text-align: justify;
+}
+
+

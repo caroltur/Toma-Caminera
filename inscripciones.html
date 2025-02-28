@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Reservas</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <link rel="stylesheet" href="cabecera.css">
+        <link rel="stylesheet" href="inscripciones.css">
+        <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-database-compat.js"></script>
+        <script>
+          // Configura tu conexión a Firebase
+          const firebaseConfig = {
+            apiKey: "AIzaSyBy4C0nQeGPgBUl7EWlMS9EyCxLSlM5jIE",
+            authDomain: "reservas-de2ec.firebaseapp.com",
+            databaseURL: "https://reservas-de2ec-default-rtdb.firebaseio.com",
+            projectId: "reservas-de2ec",
+            storageBucket: "reservas-de2ec.firebasestorage.app",
+            messagingSenderId: "248250096030",
+            appId: "1:248250096030:web:2052d817f7106b50115e8f"
+          };
+          firebase.initializeApp(firebaseConfig);
+          const db = firebase.database();
+      
+          // Referencia al nodo de rutas
+          const rutasRef = db.ref('rutas');
+          const registrosRef = db.ref('toma_caminera_2025');
+          // Función para cargar las rutas desde Firebase y actualizar los selects
+          
+    function cargarRutas() {
+      const selectRuta1 = document.getElementById('ruta1');
+      const selectRuta2 = document.getElementById('ruta2');
+
+      rutasRef.once('value', (snapshot) => {
+        const rutas = snapshot.val();
+        const fecha = new Date();
+
+        // Limpia los selects antes de agregar las opciones
+        selectRuta1.innerHTML = '<option value="">Selecciona una ruta</option>';
+        selectRuta2.innerHTML = '<option value="">Selecciona una ruta</option>';
+
+        for (const ruta in rutas) {
+          const cupos = rutas[ruta].cupos['sabado'];
+          const cupos2 = rutas[ruta].cupos['domingo'];
+          if (cupos > 0) {
+            const option1 = document.createElement('option');
+            option1.value = ruta;
+            option1.text = `${ruta} (cupos ${cupos})`;
+            selectRuta1.appendChild(option1);
+          }
+          if(cupos2>0){
+            const option2 = document.createElement('option');
+            option2.value = ruta;
+            option2.text = `${ruta} (cupos ${cupos2})`;
+            selectRuta2.appendChild(option2);
+          }
+        }
+      });
+    }
+
+          // Función para verificar los cupos disponibles y habilitar/deshabilitar el botón de envío
+          
+          function buscarRegistro() {
+      const cedula = document.getElementById('cedula').value;
+
+      registrosRef.orderByChild('numeroDocumento').equalTo(cedula).once('value', (snapshot) => {
+        const registro = snapshot.val();
+
+        if (registro) {
+          // El registro existe, cargar los datos en el formulario
+          const registroId = Object.keys(registro)[0]; // Obtener el ID del registro
+          const datos = registro[registroId];
+          localStorage.setItem("Caminante_registrado",registroId)
+          document.getElementById('nombreCompleto').value = datos.nombreCompleto;
+          document.getElementById('tipoDocumento').value = datos.tipoDocumento;
+          document.getElementById('numeroDocumento').value = datos.numeroDocumento;
+          document.getElementById('tipoSangre').value = datos.tipoSangre;
+          document.getElementById('telefono').value = datos.telefono;
+          document.getElementById('correoElectronico').value = datos.correoElectronico;
+          document.getElementById('nombreContactoEmergencia').value = datos.nombreContactoEmergencia;
+          document.getElementById('telefonoContactoEmergencia').value = datos.telefonoContactoEmergencia;
+          document.getElementById('condicionSalud').value = datos.condicionSalud;
+          document.getElementById('ruta1').value = datos.ruta1;
+          document.getElementById('ruta2').value = datos.ruta2;
+
+          // Habilitar el formulario y ocultar el campo de cédula
+          document.getElementById('formulario').style.display = 'block';
+          document.getElementById('cedula').style.display = 'none';
+          document.getElementById('buscar').style.display = 'none';
+          document.getElementById('registroId').value = registroId; // Guardar el ID del registro
+
+        } else {
+          // El registro no existe, mostrar un mensaje y habilitar el formulario para crear uno nuevo
+          //alert('No se encontró ningún registro con esa cédula. Por favor, complete el formulario.');
+          document.getElementById('numeroDocumento').value=cedula;
+          document.getElementById('formulario').style.display = 'block';
+          document.getElementById('cedula').style.display = 'none';
+          document.getElementById('buscar').style.display = 'none';
+          
+        }
+      });
+    }
+
+          function enviarFormulario() {
+             // Obtén los valores de los campos del formulario
+      const nombreCompleto = document.getElementById('nombreCompleto').value;
+      const tipoDocumento = document.getElementById('tipoDocumento').value;
+      const numeroDocumento = document.getElementById('numeroDocumento').value;
+      const tipoSangre = document.getElementById('tipoSangre').value;
+      const telefono = document.getElementById('telefono').value;
+      const correoElectronico = document.getElementById('correoElectronico').value;
+      const nombreContactoEmergencia = document.getElementById('nombreContactoEmergencia').value;
+      const telefonoContactoEmergencia = document.getElementById('telefonoContactoEmergencia').value;
+      const condicionSalud = document.getElementById('condicionSalud').value;
+
+      // Validación de campos obligatorios
+      if (!nombreCompleto || !tipoDocumento || !numeroDocumento ||
+          !tipoSangre || !telefono || !correoElectronico || !nombreContactoEmergencia ||
+          !telefonoContactoEmergencia || !condicionSalud) {
+        alert('Todos los campos son obligatorios.');
+        return;
+      }
+
+      
+            // Verifica los cupos antes de enviar el formulario
+            const registroId = localStorage.getItem("Caminante_registrado");
+
+  const ruta1 = document.getElementById('ruta1').value;
+  const ruta2 = document.getElementById('ruta2').value;
+  const fecha = new Date();
+
+  // Función para actualizar los cupos (se usa tanto para crear como para actualizar)
+  function actualizarCuposCreado(cuposRuta1, cuposRuta2) {
+    rutasRef.child(ruta1).child('cupos').child('sabado').set(cuposRuta1 - 1);
+    rutasRef.child(ruta2).child('cupos').child('domingo').set(cuposRuta2 - 1);
+  }
+
+  if (registroId && registroId !== "false") { // Verifica si existe un registroId válido
+    console.log("ingresa a actualizar")
+    registrosRef.child(registroId).once('value', (snapshot) => {
+      const datos_antiguos = snapshot.val();
+      const ruta1_antigua = datos_antiguos.ruta1;
+      const ruta2_antigua = datos_antiguos.ruta2;
+      rutasRef.child(ruta1_antigua).child('cupos').child('sabado').once('value', (snapshotRuta1) => {
+    const cuposRuta1_antigua = snapshotRuta1.val();
+
+    rutasRef.child(ruta2_antigua).child('cupos').child('domingo').once('value', (snapshotRuta2) => {
+      const cuposRuta2_antigua = snapshotRuta2.val();
+
+      // Función para actualizar los cupos (considerando cambios en las rutas)
+      function actualizarCupos(cuposRuta1, cuposRuta2) {
+        console.log(cuposRuta1+'-'+cuposRuta2+'-'+ruta1+'-'+ruta2+'-'+ruta1_antigua+'-'+ruta2_antigua)
+        //Ruta 1
+        if(ruta1_antigua !== ruta1){
+          rutasRef.child(ruta1_antigua).child('cupos').child('sabado').set(cuposRuta1_antigua + 1);
+          rutasRef.child(ruta1).child('cupos').child('sabado').set(cuposRuta1-1);
+        }
+
+        //Ruta 2
+        if(ruta2_antigua !== ruta2){
+          rutasRef.child(ruta2_antigua).child('cupos').child('domingo').set(cuposRuta2_antigua + 1);
+          rutasRef.child(ruta2).child('cupos').child('domingo').set(cuposRuta2-1);
+        } 
+      }
+
+    rutasRef.child(ruta1).child('cupos').child('sabado').once('value', (snapshot) => {
+      const cuposRuta1 = snapshot.val();
+      if (cuposRuta1 <= 0) {
+        alert(`No hay cupos disponibles para la ruta ${ruta1} el día Sábado.`);
+        return;
+      }
+
+      rutasRef.child(ruta2).child('cupos').child('domingo').once('value', (snapshot) => {
+        const cuposRuta2 = snapshot.val();
+        if (cuposRuta2 <= 0) {
+          alert(`No hay cupos disponibles para la ruta ${ruta2} el día Domingo.`);
+          return;
+        }
+
+        db.ref('toma_caminera_2025').child(registroId).update({ // <-- Usa .update() y el registroId
+          nombreCompleto,
+          tipoDocumento,
+          numeroDocumento,
+          tipoSangre,
+          telefono,
+          correoElectronico,
+          nombreContactoEmergencia,
+          telefonoContactoEmergencia,
+          condicionSalud,
+          ruta1,
+          ruta2,
+          fechaHoraInscripcion: new Date().toLocaleString()
+        }).then(() => {
+          actualizarCupos(cuposRuta1, cuposRuta2); // Actualiza los cupos
+          alert('Datos actualizados correctamente.');
+          localStorage.setItem("Caminante_registrado", false); // Restablece el valor en localStorage
+          window.location.reload();
+        }).catch((error) => {
+          console.error('Error al actualizar los datos:', error);
+          alert('Error al actualizar los datos. Por favor, inténtalo de nuevo.');
+        });
+      });
+    });
+  });
+    });
+  });
+  } else {
+    console.log("ingresa a crear")
+    // El registro no existe, crear uno nuevo en Firebase
+    rutasRef.child(ruta1).child('cupos').child('sabado').once('value', (snapshot) => {
+      const cuposRuta1 = snapshot.val();
+      if (cuposRuta1 <= 0) {
+        alert(`No hay cupos disponibles para la ruta ${ruta1} el día Sábado.`);
+        return;
+      }
+
+      rutasRef.child(ruta2).child('cupos').child('domingo').once('value', (snapshot) => {
+        const cuposRuta2 = snapshot.val();
+        if (cuposRuta2 <= 0) {
+          alert(`No hay cupos disponibles para la ruta ${ruta2} el día Domingo.`);
+          return;
+        }
+
+        db.ref('toma_caminera_2025').push({
+          nombreCompleto,
+          tipoDocumento,
+          numeroDocumento,
+          tipoSangre,
+          telefono,
+          correoElectronico,
+          nombreContactoEmergencia,
+          telefonoContactoEmergencia,
+          condicionSalud,
+          ruta1,
+          ruta2,
+          fechaHoraInscripcion: new Date().toLocaleString()
+        }).then((nuevaReferencia) => { // <-- Obtén la referencia del nuevo registro
+          const nuevoRegistroId = nuevaReferencia.key; // <-- Obtén el ID del nuevo registro
+          actualizarCuposCreado(cuposRuta1, cuposRuta2); // Actualiza los cupos
+          localStorage.setItem("Caminante_registrado", nuevoRegistroId); // Guarda el ID en localStorage
+          alert('Registro creado correctamente.');
+          window.location.reload();
+        }).catch((error) => {
+          console.error('Error al crear el registro:', error);
+          alert('Error al crear el registro. Por favor, inténtalo de nuevo.');
+        });
+      });
+    });
+  }
+}      
+      
+          // Carga las rutas al cargar la página
+          window.onload = function() {
+  localStorage.removeItem("Caminante_registrado");
+  cargarRutas();
+};
+      
+        </script>
+      </head>
+<body>
+  <nav class="navbar navbar-expand-lg encabezado">
+    <div class="container-fluid">
+        <!-- Botón menú hamburguesa -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuNav">
+            <span>&#9776;</span> <!-- Ícono de hamburguesa -->
+        </button>
+
+        <!-- Menú -->
+        <div class="collapse navbar-collapse" id="menuNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 menu">
+                <li class="nav-item"><a class="nav-link" href="index.html">Rutas</a></li>
+                <li class="nav-item"><a class="nav-link" href="inscripciones.html">Inscripciones</a></li>
+                <li class="nav-item"><a class="nav-link" href="reservas.html">Reservas</a></li>
+            </ul>
+        </div>
+
+        <!-- Título -->
+        <div id="titulo" class="titulo">
+            <h1 class="h4">Carolina Mágica</h1>
+            <p class="m-0">Senderos y Cascadas</p>
+        </div>
+    </div>
+</nav>
+  <div class="contenido_body">
+    <div id="codigo_box">
+      <h1>Toma Caminera Carolina del Príncipe</h1>
+        <label for="cedula">*Ingrese su número de documento:</label>
+        <input type="text" id="cedula" placeholder="sin puntos ni comas">
+        <label for="codigo">*Ingrese su código de acceso:</label>
+        <input type="text" id="codigo">
+        <button onclick="validarCodigo()">Validar</button>
+    </div>
+    <div id="formulario_box">
+        <h1>Formulario Toma Caminera Carolina</h1>
+  <form id="formulario">
+    <label for="nombreCompleto">*Nombre Completo:</label>
+    <input type="text" id="nombreCompleto" required><br><br>
+
+    <label for="tipoDocumento">*Tipo de Documento:</label>
+    <select id="tipoDocumento" required>
+      <option value="cedula">Cédula</option>
+      <option value="tarjeta">Tarjeta de Identidad</option>
+      <option value="pasaporte">Pasaporte</option>
+    </select><br><br>
+
+    <label for="numeroDocumento">*Número de Documento:</label>
+    <input type="text" id="numeroDocumento" required><br><br>
+
+    <label for="tipoSangre">*Tipo de Sangre:</label>
+    <select id="tipoSangre" required>
+      <option value="a+">A+</option>
+      <option value="a-">A-</option>
+      <option value="b+">B+</option>
+      <option value="b-">B-</option>
+      <option value="o+">O+</option>
+      <option value="o-">O-</option>
+      <option value="ab+">AB+</option>
+      <option value="ab-">AB-</option>
+    </select><br><br>
+
+    <label for="telefono">*Teléfono:</label>
+    <input type="tel" id="telefono" required><br><br>
+
+    <label for="correoElectronico">*Correo Electrónico:</label>
+    <input type="email" id="correoElectronico" required><br><br>
+
+    <label for="nombreContactoEmergencia">*Nombre Contacto Emergencia:</label>
+    <input type="text" id="nombreContactoEmergencia" required><br><br>
+
+    <label for="telefonoContactoEmergencia">*Teléfono Contacto Emergencia:</label>
+    <input type="tel" id="telefonoContactoEmergencia" required><br><br>
+
+    <label for="condicionSalud">Condición de Salud:</label>
+    <textarea id="condicionSalud" placeholder="Describa su condición especial de salud si la tiene como Alergias, lesiones de rodillas, Asma, claustrofobia, Hipertensión, entre otras."></textarea><br><br>
+
+    <label for="ruta1">Ruta 1 Elegida (Sábado):</label>
+    <select id="ruta1" required>
+      <option value="">Selecciona una ruta</option>
+    </select><br><br>
+
+    <label for="ruta2">Ruta 2 Elegida (Domingo):</label>
+    <select id="ruta2" required>
+      <option value="">Selecciona una ruta</option>
+    </select><br><br>
+
+    <button type="button" id="enviar" onclick="enviarFormulario()">Enviar</button>
+  </form>
+    </div>
+  </div>
+    <footer>
+      <p>&copy; 2025 Turismo de Aventura | Carolina del Príncipe</p>
+  </footer>
+    <script>
+        async function validarCodigo() {
+            const codigo = document.getElementById("codigo").value.trim();
+            const cedula = document.getElementById("cedula").value.trim().replace(/\D/g, "");
+            console.log(generarCodigoUnico(cedula))
+            if (!codigo) {
+                alert("Por favor, ingrese un código.");
+                return;
+            }
+
+            try {
+
+                if (generarCodigoUnico(cedula) === codigo) {
+                    alert("Código válido. Puede registrarse.");
+                    document.getElementById("formulario_box").style.display = "block";
+                    document.getElementById("codigo_box").style.display = "none";
+                    buscarRegistro();
+                } else {
+                    alert("Código inválido.");
+                }
+            } catch (error) {
+                alert("Error al validar el código. Intente de nuevo.");
+            }
+        }
+
+        
+
+        function generarCodigoUnico(telefono) {
+            if (!telefono || telefono.length < 7) {
+                return "ERROR"; // Validación básica
+            }
+
+            let hash = 0;
+            for (let i = 0; i < telefono.length; i++) {
+                hash = (hash << 5) - hash + telefono.charCodeAt(i);
+                hash |= 0; // Convertir a entero
+            }
+
+            let codigo = Math.abs(hash).toString(36).toUpperCase().slice(0, 6);
+            return codigo;
+        }
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+          const menuNav = document.getElementById("menuNav");
+          const titulo = document.getElementById("titulo");
+
+          menuNav.addEventListener("show.bs.collapse", function () {
+              titulo.style.display = "none"; // Oculta el título cuando el menú se despliega
+          });
+
+          menuNav.addEventListener("hide.bs.collapse", function () {
+              titulo.style.display = "block"; // Muestra el título cuando el menú se oculta
+          });
+      });
+  </script>
+  <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            function detectarDispositivo() {
+                const userAgent = navigator.userAgent.toLowerCase();
+                const body = document.body;
+
+                if (/mobile|android|iphone|ipod|blackberry|opera mini|iemobile|windows phone/i.test(userAgent)) {
+                    body.classList.add("movile"); // Para celulares
+                }  else {
+                    body.classList.add("pc"); // Para computadoras
+                }
+            }
+
+            detectarDispositivo();
+        });
+    </script>
+</body>
+</html>
