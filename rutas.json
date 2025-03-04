@@ -2,7 +2,7 @@
     "rutas": [
         {  
           "ruta": "Cascadas de la María",
-          "ubicacion": "Vereda La Herradura, a 10 minutos de la cabecera municipal",
+          "ubicacion": "Vereda La Herradura",
           "descripcion": "Ruta ecológica donde se pueden visitar seis cascadas, practicar rivering y adentrarse en un bosque altoandino con gran riqueza natural. Ideal para aficionados de cascadas, botánica y avistamiento de aves.",
           "atractivos": [
             "Cadena de Cascadas de 'La María'",
@@ -21,17 +21,17 @@
             "img/cascadas3.jpg",
             "img/verAlbum.png"
           ],
-          "album":"https://photos.app.goo.gl/WXf9F1x6o6PmL5YT8"
+          "album":"https://photos.app.goo.gl/unPSjs42fAnX8q3E8"
         },
         {  
           "ruta": "Anillo vial",
-          "ubicacion": "Vereda La Herradura, a 10 minutos de la cabecera municipal",
-          "descripcion": "Ruta ecológica donde se pueden visitar seis cascadas, practicar rivering y adentrarse en un bosque altoandino con gran riqueza natural. Ideal para aficionados de cascadas, botánica y avistamiento de aves.",
+          "ubicacion": "Vereda La Vega",
+          "descripcion": "Un recorrido sencillo por paisajes rurales y urbanos. Disfruta de la vista de la produción lechera del municipio, vistas panorámicas, el Balneario La Vega y descubre lugares interesantes como ciudadela el artesanos y productores locales. ¡Una experiencia turística variada y accesible para todos!",
           "atractivos": [
-            "Cadena de Cascadas de 'La María'",
-            "Avistamiento de aves",
-            "Fauna y flora nativas",
-            "Mirador La María"
+            "Miradores",
+            "Zona producción Lechera",
+            "Alto de la Cruz",
+            "Balneario la Vega"
           ],
           "recorrido": {
             "dificultad": "Grado 2.5 con pendiente inclinada",
@@ -39,22 +39,21 @@
             "duracion": "3 horas"
           },
           "imagenes": [
-            "img/cascadas1.jpg",
-            "img/cascadas2.jpg",
-            "img/cascadas3.jpg",
+            "img/anillo1.jpeg",
+            "img/anillo2.jpeg",
+            "img/anillo3.jpeg",
             "img/verAlbum.png"
           ],
           "album":"https://photos.app.goo.gl/WXf9F1x6o6PmL5YT8"
         },
         {  
           "ruta": "Pinera de Canasto",
-          "ubicacion": "Vereda La Herradura, a 10 minutos de la cabecera municipal",
-          "descripcion": "Ruta ecológica donde se pueden visitar seis cascadas, practicar rivering y adentrarse en un bosque altoandino con gran riqueza natural. Ideal para aficionados de cascadas, botánica y avistamiento de aves.",
+          "ubicacion": "Sector el Llano - Claritas",
+          "descripcion": "Recorrido ecológico, histórico y natural. Explora bosques diversos, vistas panorámicas y pineras. Regresa al pueblo por un antiguo canalón, sumergiéndote en la historia local. ¡Una aventura completa y enriquecedora!",
           "atractivos": [
-            "Cadena de Cascadas de 'La María'",
-            "Avistamiento de aves",
-            "Fauna y flora nativas",
-            "Mirador La María"
+            "Bosque de Pinos",
+            "Miradores",
+            "Canalón"
           ],
           "recorrido": {
             "dificultad": "Grado 2.5 con pendiente inclinada",
@@ -62,9 +61,9 @@
             "duracion": "3 horas"
           },
           "imagenes": [
-            "img/cascadas1.jpg",
-            "img/cascadas2.jpg",
-            "img/cascadas3.jpg",
+            "img/canasto1.jpeg",
+            "img/canasto2.jpeg",
+            "img/canasto3.jpeg",
             "img/verAlbum.png"
           ],
           "album":"https://photos.app.goo.gl/WXf9F1x6o6PmL5YT8"
@@ -84,17 +83,17 @@
             "duracion": "5 horas"
           },
           "imagenes": [
-            "img/cascadas1.jpg",
-            "img/cascadas2.jpg",
-            "img/cascadas3.jpg",
+            "img/Energia1.jpeg",
+            "img/Energia2.jpeg",
+            "img/Energia3.jpeg",
             "img/verAlbum.png"
           ],
-          "album":"https://photos.app.goo.gl/WXf9F1x6o6PmL5YT8"
+          "album":"https://photos.app.goo.gl/NrsuBLpTagZs6qom9"
         },
         {
             "ruta": "Cascada la Holanda",
             "ubicacion": "Santa Gertrudis",
-            "descripcion": "Esta experiencia lo incluye todo. La aventura inicia con un paseo en bote por el embalse de Troneras, luego un senderismo de grado medio con mágicos miradores desde donde verás paisajes que te dejarán sin palabras. Después de 3 km de recorrido por sendero y un poco de rivering, llegarás a la cascada más alta del municipio con una caída aproximada de 70 metros. Para terminar, disfrutarás del agua refrescante del charco El Cañal para dejar el cansancio atrás y regresar a la cabecera municipal.",
+            "descripcion": "Embárcate en una aventura inolvidable: paseo en bote por el embalse Troneras, senderismo con vistas espectaculares y la majestuosa cascada de 70 metros. Refréscate en el charco El Cañal y regresa renovado.",
             "atractivos": [
               "Cascada la Holanda",
               "Miradores",
@@ -107,12 +106,12 @@
               "duracion": "5 horas"
             },
           "imagenes": [
-            "img/cascadas1.jpg",
-            "img/cascadas2.jpg",
-            "img/cascadas3.jpg",
+            "img/holanda1.jpeg",
+            "img/holanda2.jpg",
+            "img/holanda3.jpg",
             "img/verAlbum.png"
           ],
-          "album":"https://photos.app.goo.gl/WXf9F1x6o6PmL5YT8"
+          "album":"https://photos.app.goo.gl/jsZvLceM88PJCGga9"
         },
        
         {
@@ -130,12 +129,12 @@
               "duracion": "3:30 horas"
             },
           "imagenes": [
-            "img/cascadas1.jpg",
-            "img/cascadas2.jpg",
-            "img/cascadas3.jpg",
+            "img/cavernas1.jpg",
+            "img/cavernas2.jpeg",
+            "img/cavernas3.jpeg",
             "img/verAlbum.png"
           ],
-          "album":"https://photos.app.goo.gl/WXf9F1x6o6PmL5YT8"
+          "album":"https://photos.app.goo.gl/xXn5jPggpr5fdw936"
         },
         {
             "ruta": "Cascada Escondida",
@@ -152,12 +151,12 @@
               "duracion": "7 horas"
             },
           "imagenes": [
-            "img/cascadas1.jpg",
-            "img/cascadas2.jpg",
-            "img/cascadas3.jpg",
+            "img/CascadaEscondida1.jpeg",
+            "img/CascadaEscondida2.jpeg",
+            "img/CascadaEscondida3.jpeg",
             "img/verAlbum.png"
           ],
-          "album":"https://photos.app.goo.gl/WXf9F1x6o6PmL5YT8"
+          "album":"https://photos.app.goo.gl/Bri8m4cu8KHeqnWw5"
         },
         {
             "ruta": "La Chorrera",
@@ -175,12 +174,12 @@
               "duracion": "7 horas"
             },
           "imagenes": [
-            "img/cascadas1.jpg",
-            "img/cascadas2.jpg",
-            "img/cascadas3.jpg",
+            "img/chorrera1.jpeg",
+            "img/chorrera2.jpg",
+            "img/chorrera3.jpeg",
             "img/verAlbum.png"
           ],
-          "album":"https://photos.app.goo.gl/WXf9F1x6o6PmL5YT8"
+          "album":"https://photos.app.goo.gl/f8PRM5r53FdCUYTq9"
         },
         {
             "ruta": "Charco Carraña",
@@ -199,9 +198,9 @@
               "duracion": "8 horas"
             },
           "imagenes": [
-            "img/cascadas1.jpg",
-            "img/cascadas2.jpg",
-            "img/cascadas3.jpg",
+            "img/CharcoCarraña1.jpeg",
+            "img/CharcoCarraña2.jpeg",
+            "img/CharcoCarraña3.jpeg",
             "img/verAlbum.png"
           ],
           "album":"https://photos.app.goo.gl/WXf9F1x6o6PmL5YT8"

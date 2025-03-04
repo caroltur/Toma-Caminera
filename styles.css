@@ -143,5 +143,12 @@ footer {
 .movile .modal-contenido{
     text-align: justify;
 }
-
-
+.dosColumnas{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+.dosColumnas>div{
+    text-align: left;
+}

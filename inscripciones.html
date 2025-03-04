@@ -78,6 +78,8 @@
           document.getElementById('numeroDocumento').value = datos.numeroDocumento;
           document.getElementById('tipoSangre').value = datos.tipoSangre;
           document.getElementById('telefono').value = datos.telefono;
+          document.getElementById('talla').value = datos.talla;
+          document.getElementById('genero').value = datos.genero;
           document.getElementById('correoElectronico').value = datos.correoElectronico;
           document.getElementById('nombreContactoEmergencia').value = datos.nombreContactoEmergencia;
           document.getElementById('telefonoContactoEmergencia').value = datos.telefonoContactoEmergencia;
@@ -109,6 +111,8 @@
       const tipoDocumento = document.getElementById('tipoDocumento').value;
       const numeroDocumento = document.getElementById('numeroDocumento').value;
       const tipoSangre = document.getElementById('tipoSangre').value;
+      const talla=document.getElementById('talla').value;
+      const genero=document.getElementById('genero').value;
       const telefono = document.getElementById('telefono').value;
       const correoElectronico = document.getElementById('correoElectronico').value;
       const nombreContactoEmergencia = document.getElementById('nombreContactoEmergencia').value;
@@ -117,8 +121,8 @@
 
       // Validación de campos obligatorios
       if (!nombreCompleto || !tipoDocumento || !numeroDocumento ||
-          !tipoSangre || !telefono || !correoElectronico || !nombreContactoEmergencia ||
-          !telefonoContactoEmergencia || !condicionSalud) {
+          !tipoSangre || !telefono ||!talla || !correoElectronico || !nombreContactoEmergencia ||
+          !telefonoContactoEmergencia ) {
         alert('Todos los campos son obligatorios.');
         return;
       }
@@ -185,6 +189,8 @@
           numeroDocumento,
           tipoSangre,
           telefono,
+          talla,
+          genero,
           correoElectronico,
           nombreContactoEmergencia,
           telefonoContactoEmergencia,
@@ -229,6 +235,8 @@
           numeroDocumento,
           tipoSangre,
           telefono,
+          talla,
+          genero,
           correoElectronico,
           nombreContactoEmergencia,
           telefonoContactoEmergencia,
@@ -325,6 +333,23 @@
 
     <label for="correoElectronico">*Correo Electrónico:</label>
     <input type="email" id="correoElectronico" required><br><br>
+
+    <label for="genero">*Genero:</label>
+    <select id="genero" required>
+      <option value="M">Masculino</option>
+      <option value="F">Femenino</option>
+    </select><br><br>
+
+    <label for="talla">*Talla de camiseta:</label>
+    <select id="talla" required>
+      <option value="xs">XS</option>
+      <option value="s">S</option>
+      <option value="m">M</option>
+      <option value="l">L</option>
+      <option value="xl">XL</option>
+      <option value="xxl">XXL</option>
+    </select><br><br>
+
 
     <label for="nombreContactoEmergencia">*Nombre Contacto Emergencia:</label>
     <input type="text" id="nombreContactoEmergencia" required><br><br>

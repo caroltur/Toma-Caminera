@@ -30,14 +30,22 @@ function abrirModal(index) {
     const modalDificultad = document.getElementById("modal-dificultad");
     const modalDuracion = document.getElementById("modal-duracion");
     const modalImagenes = document.getElementById("modal-imagenes");
+    const atractivosList = document.getElementById("atractivos-list");
+
+
 
     // Llenar el modal con la información de la ruta seleccionada
+    atractivosList.innerHTML = "";
     modalTitulo.textContent = ruta.ruta;
     modalDescripcion.textContent = ruta.descripcion;
     modalDistancia.textContent = ruta.recorrido.distancia || "No especificada";
     modalDificultad.textContent = ruta.recorrido.dificultad || "No especificada";
     modalDuracion.textContent = ruta.recorrido.duracion || "No especificada";
-
+    ruta.atractivos.map(atractivo => {
+        const listItem = document.createElement("li");
+        listItem.textContent = atractivo;
+        atractivosList.appendChild(listItem);
+      });
     // Agregar imágenes al carrusel
     if (ruta.imagenes && ruta.imagenes.length > 0) {
         modalImagenes.innerHTML = ruta.imagenes.map((img, index) => 
