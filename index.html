@@ -49,9 +49,16 @@
             <span class="cerrar" onclick="cerrarModal()">&times;</span>
             <h2 id="modal-titulo"></h2>
             <p id="modal-descripcion"></p>
-            <p><strong>Distancia:</strong> <span id="modal-distancia"></span></p>
-            <p><strong>Dificultad:</strong> <span id="modal-dificultad"></span></p>
-            <p><strong>Duración:</strong> <span id="modal-duracion"></span></p>
+            <div class="dosColumnas">
+                <div>
+                    <p><strong>Distancia:</strong> <span id="modal-distancia"></span></p>
+                    <p><strong>Dificultad:</strong> <span id="modal-dificultad"></span></p>
+                    <p><strong>Duración:</strong> <span id="modal-duracion"></span></p>
+                </div>
+                <div>
+                    <ul id="atractivos-list"></ul>
+                </div>
+            </div>
             <!-- Carrusel de imágenes -->
             <div class="carousel" id="modal-imagenes"></div>
         </div>
