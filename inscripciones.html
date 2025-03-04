@@ -348,7 +348,8 @@
       <option value="l">L</option>
       <option value="xl">XL</option>
       <option value="xxl">XXL</option>
-    </select><br><br>
+    </select><br>
+    <a href="#" id="openModal">Ver medidas de tallas</a><br><br>
 
 
     <label for="nombreContactoEmergencia">*Nombre Contacto Emergencia:</label>
@@ -377,6 +378,28 @@
     <footer>
       <p>&copy; 2025 Turismo de Aventura | Carolina del Príncipe</p>
   </footer>
+  <div id="modal" class="modal">
+    <div class="modal-content">
+        <img id="modalImage" src="./img/medidas.png" alt="Imagen" />
+        <br>
+        <button class="close" id="closeModal">Cerrar</button>
+    </div>
+</div>
+
+<script>
+  const modal = document.getElementById("modal");
+  const openModal = document.getElementById("openModal");
+  const closeModal = document.getElementById("closeModal");
+  
+  openModal.addEventListener("click", function(event) {
+      event.preventDefault();
+      modal.style.display = "flex";
+  });
+
+  closeModal.addEventListener("click", function() {
+      modal.style.display = "none";
+  });
+</script>
     <script>
         async function validarCodigo() {
             const codigo = document.getElementById("codigo").value.trim();
