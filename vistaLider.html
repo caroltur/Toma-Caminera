@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vista de Grupo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-database-compat.js"></script>
+    <link rel="stylesheet" href="cabecera.css">
+    <link rel="stylesheet" href="vistaLider.css">
+    
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg encabezado">
+        <div class="container-fluid">
+            <!-- Botón menú hamburguesa -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuNav">
+                <span>&#9776;</span> <!-- Ícono de hamburguesa -->
+            </button>
+
+            <!-- Menú -->
+            <div class="collapse navbar-collapse" id="menuNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 menu">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Rutas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="inscripciones.html">Inscripciones</a></li>
+                    <li class="nav-item"><a class="nav-link" href="reservas.html">Reservas</a></li>
+                </ul>
+            </div>
+
+            <!-- Título -->
+            <div id="titulo" class="titulo">
+                <h1 class="h4">Carolina Mágica</h1>
+                <p class="m-0">Senderos y Cascadas</p>
+            </div>
+        </div>
+    </nav>
+    <div class="container-fluid containerNuevo mt-4">
+        <div class="row">
+            <div class="col-12">
+                <h2 id="nombreGrupo" class="mb-4"></h2>
+                
+                <!-- Sección de Búsqueda -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <input type="text" id="busquedaRapida" class="form-control" placeholder="Búsqueda rápida (nombre o documento)">
+                    </div>
+                    <div class="col-md-6 botonNuevoCaminante">
+                        
+                        <button class="btn btn-success ms-2" onclick="abrirModalNuevoCaminante()">
+                            Nuevo Caminante
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tabla de Caminantes -->
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover tablaCaminante" id="tablaCaminantes">
+                        <thead>
+                            <tr>
+                                <th>N°</th>
+                                <th>Nombre Completo</th>
+                                <th>Número Documento</th>
+                                <th>Ruta 1 (Sábado)</th>
+                                <th>Ruta 2 (Domingo)</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cuerpoCaminantes"></tbody>
+                    </table>
+                    <h4 id="registrosFaltantes"></h4>
+                </div>
+
+                <!-- Paginación -->
+                <nav>
+                    <ul class="pagination" id="paginacion"></ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Búsqueda Detallada -->
+   
+
+    <!-- Modal Edición Caminante -->
+    <div class="modal fade" id="modalEditarCaminante" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar Caminante</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Formulario de edición similar al de inscripción -->
+                    <form id="formularioEdicion">
+                        <!-- Campos de edición se cargarán dinámicamente -->
+                    </form>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Configuración Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBy4C0nQeGPgBUl7EWlMS9EyCxLSlM5jIE",
+            authDomain: "reservas-de2ec.firebaseapp.com",
+            databaseURL: "https://reservas-de2ec-default-rtdb.firebaseio.com",
+            projectId: "reservas-de2ec",
+            storageBucket: "reservas-de2ec.firebasestorage.app",
+            messagingSenderId: "248250096030",
+            appId: "1:248250096030:web:2052d817f7106b50115e8f"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        const registrosRef = db.ref('toma_caminera_2025');
+        const gruposRef = db.ref('grupos');
+        const rutasRef = db.ref('rutas');
+
+        let caminantesGrupo = [];
+        let grupoActual = null;
+        const REGISTROS_POR_PAGINA = 10;
+        let paginaActual = 1;
+
+        // Función para cargar datos del grupo y caminantes
+        function cargarDatosGrupo() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const cedulaLider = urlParams.get('cedula');
+            // Buscar grupo del líder
+            gruposRef.orderByChild('liderCedula').equalTo(cedulaLider).once('value', (snapshot) => {
+                const grupos = snapshot.val();
+                if (grupos) {
+                    const grupoId = Object.keys(grupos)[0];
+                    grupoActual = grupos[grupoId];
+                    grupoActual.id=grupoId;
+                    document.getElementById('nombreGrupo').textContent = grupoActual.nombre;
+                    document.getElementById('registrosFaltantes').textContent=grupoActual.integrantes>0?"Faltan "+grupoActual.integrantes+" caminantes por registrar en este grupo.":"";
+                    
+                    // Cargar caminantes del grupo
+                    cargarCaminantes();
+                }
+            });
+        }
+
+        function cargarCaminantes(filtro = null) {
+            registrosRef.orderByChild('grupoID').equalTo(grupoActual.id).once('value', (snapshot) => {
+                caminantesGrupo = [];
+                snapshot.forEach((childSnapshot) => {
+                    const caminante = childSnapshot.val();
+                    caminante.id = childSnapshot.key;
+                    
+                    // Aplicar filtro si existe
+                    
+
+                    caminantesGrupo.push(caminante);
+                });
+                
+                mostrarPagina(paginaActual);
+                generarPaginacion();
+            });
+        }
+
+        function mostrarPagina(pagina) {
+            const inicio = (pagina - 1) * REGISTROS_POR_PAGINA;
+            const fin = inicio + REGISTROS_POR_PAGINA;
+            const caminantesPagina = caminantesGrupo.slice(inicio, fin);
+
+            const cuerpoCaminantes = document.getElementById('cuerpoCaminantes');
+            cuerpoCaminantes.innerHTML = '';
+            var contadorCaminanteGrupo=0;
+            caminantesPagina.forEach(caminante => {
+                const fila = document.createElement('tr');
+                fila.innerHTML = `
+                    <td>${++contadorCaminanteGrupo}</td>
+                    <td>${caminante.nombreCompleto}</td>
+                    <td>${caminante.numeroDocumento}</td>
+                    <td>${caminante.ruta1}</td>
+                    <td>${caminante.ruta2}</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary" onclick="editarCaminante('${caminante.id}')">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                    </td>
+                `;
+                cuerpoCaminantes.appendChild(fila);
+            });
+        }
+
+        function generarPaginacion() {
+            const totalPaginas = Math.ceil(caminantesGrupo.length / REGISTROS_POR_PAGINA);
+            const paginacion = document.getElementById('paginacion');
+            paginacion.innerHTML = '';
+
+            for (let i = 1; i <= totalPaginas; i++) {
+                const li = document.createElement('li');
+                li.classList.add('page-item', i === paginaActual ? 'active' : '');
+                li.innerHTML = `<a class="page-link" href="#" onclick="cambiarPagina(${i})">${i}</a>`;
+                paginacion.appendChild(li);
+            }
+        }
+
+        function cambiarPagina(nuevaPagina) {
+            paginaActual = nuevaPagina;
+            mostrarPagina(nuevaPagina);
+            generarPaginacion();
+        }
+
+        // Función de búsqueda rápida
+        document.getElementById('busquedaRapida').addEventListener('input', function() {
+            const textoBusqueda = this.value.toLowerCase();
+            const caminantesFiltrados = caminantesGrupo.filter(
+                c => c.nombreCompleto.toLowerCase().includes(textoBusqueda) || 
+                     c.numeroDocumento.includes(textoBusqueda)
+            );
+            
+            const cuerpoCaminantes = document.getElementById('cuerpoCaminantes');
+            cuerpoCaminantes.innerHTML = '';
+            var contadorCaminanteGrupo=0;
+            caminantesFiltrados.forEach(caminante => {
+                const fila = document.createElement('tr');
+                fila.innerHTML = `
+                    <td>${++contadorCaminanteGrupo}</td>
+                    <td>${caminante.nombreCompleto}</td>
+                    <td>${caminante.numeroDocumento}</td>
+                    <td>${caminante.ruta1}</td>
+                    <td>${caminante.ruta2}</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary" onclick="editarCaminante('${caminante.id}')">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                    </td>
+                `;
+                cuerpoCaminantes.appendChild(fila);
+            });
+        });
+
+        
+
+        // Función para editar caminante
+        function editarCaminante(id) {
+            // Lógica para cargar datos del caminante en el modal de edición
+            registrosRef.child(id).once('value', (snapshot) => {    
+                const caminante = snapshot.val();
+                // Aquí cargarías los datos en el formulario de edición
+                const formulario = document.getElementById('formularioEdicion');
+                const rutasFormulario=formulario.innerHTML;
+                formulario.innerHTML = `
+                     <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="nombreCompleto" class="form-label">*Nombre Completo</label>
+                                <input type="text" class="form-control" id="nombreCompleto" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="correoElectronico" class="form-label">*Correo Electrónico</label>
+                                <input type="email" class="form-control" id="correoElectronico" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="tipoDocumento" class="form-label">*Tipo Documento</label>
+                                <select class="form-control" id="tipoDocumento" required>
+                                    <option value="cedula">Cédula</option>
+                                    <option value="tarjeta">Tarjeta de Identidad</option>
+                                    <option value="pasaporte">Pasaporte</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="numeroDocumento" class="form-label">*Número Documento</label>
+                                <input type="number" class="form-control" id="numeroDocumento" required disabled>
+                            </div>
+                             <div class="col-md-6 mb-3">
+                                <label for="tipoSangre" class="form-label">*Tipo de Sangre</label>
+                                <select class="form-control" id="tipoSangre" required>
+                                    <option value="" disabled selected>Seleccione tipo de sangre</option>
+                                    <option value="a+">A+</option>
+                                    <option value="a-">A-</option>
+                                    <option value="b+">B+</option>
+                                    <option value="b-">B-</option>
+                                    <option value="o+">O+</option>
+                                    <option value="o-">O-</option>
+                                    <option value="ab+">AB+</option>
+                                    <option value="ab-">AB-</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="telefono" class="form-label">*Teléfono</label>
+                                <input type="number" class="form-control" id="telefono" required " 
+                                       placeholder="Ingrese el número">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="genero" class="form-label">*Genero</label>
+                                <select id="genero" class="form-control"  required>
+                                    <option value="" disabled selected>Seleccione el Género</option>
+                                    <option value="M">Masculino</option>
+                                    <option value="F">Femenino</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                               <label for="talla" class="form-label">*Talla de buso:</label>
+                                <select id="talla" class="form-control" required>
+                                    <option value="" disabled selected>Talla</option>
+                                    <option value="xs">XS</option>
+                                    <option value="s">S</option>
+                                    <option value="m">M</option>
+                                    <option value="l">L</option>
+                                    <option value="xl">XL</option>
+                                    <option value="xxl">XXL</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="nombreContactoEmergencia" class="form-label">*Contacto de Emergencia</label>
+                                <input type="text" class="form-control" id="nombreContactoEmergencia" placeholder="Nombre Completo" required>
+                            </div>
+                             <div class="col-md-6 mb-3">
+                                <label for="telefonoContactoEmergencia" class="form-label">*Teléfono de Contacto de Emergencia</label>
+                                <input type="tel" class="form-control" id="telefonoContactoEmergencia" required 
+                                       pattern="[0-9]{7,10}" 
+                                       title="Ingrese un número de 7 o 10 dígitos">
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="condicionSalud" class="form-label">Condición de Salud:</label>
+                                <textarea id="condicionSalud" placeholder="Describa su condición especial de salud si la tiene como Alergias, lesiones de rodillas, Asma, claustrofobia, Hipertensión, entre otras." class="form-control" ></textarea>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="rutaE1" class="form-label">*Ruta 1 (Sábado)</label>
+                                <select class="form-control" id="rutaE1" required>
+                                    <option value="">Seleccione una ruta</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="rutaE2" class="form-label">*Ruta 2 (Domingo)</label>
+                                <select class="form-control" id="rutaE2" required>
+                                    <option value="">Seleccione una ruta</option>
+                                </select>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-primary" onclick="CrearEditar(true, '${id}', grupoActual.id)">Guardar Cambios 1</button>
+                            </div>
+                        </div>
+                `;
+                cargarRutasEnSelect('rutaE1','rutaE2',caminante.ruta1,caminante.ruta2);
+                const modalEdicion = new bootstrap.Modal(document.getElementById('modalEditarCaminante'));
+                modalEdicion.show();
+                precargarDatos(caminante);
+            });
+        }
+
+      
+
+
+
+function cargarRutasEnSelect(idRuta1, idRuta2, rutaElegida1 = null, rutaElegida2 = null) {
+    
+    const selectRuta1 = document.getElementById(idRuta1);
+    const selectRuta2 = document.getElementById(idRuta2);
+    rutasRef.once('value', (snapshot) => {
+        const rutas = snapshot.val();
+
+        // Limpia los selects antes de agregar las opciones
+        selectRuta1.innerHTML = '<option value="">Selecciona una ruta</option>';
+        selectRuta2.innerHTML = '<option value="">Selecciona una ruta</option>';
+
+        for (const ruta in rutas) {
+        const cupos = rutas[ruta].cupos['sabado'];
+        const cupos2 = rutas[ruta].cupos['domingo'];
+
+        if (cupos > 0) {
+            const option1 = document.createElement('option');
+            option1.value = ruta;
+            option1.text = `${ruta} (cupos ${cupos})`;
+            selectRuta1.appendChild(option1);
+
+            // Si se proporciona rutaElegida1 y coincide con la ruta actual, selecciona la opción
+            if (rutaElegida1 && rutaElegida1 === ruta) {
+            option1.selected = true;
+            }
+        }
+
+        if (cupos2 > 0) {
+            const option2 = document.createElement('option');
+            option2.value = ruta;
+            option2.text = `${ruta} (cupos ${cupos2})`;
+            selectRuta2.appendChild(option2);
+
+            // Si se proporciona rutaElegida2 y coincide con la ruta actual, selecciona la opción
+            if (rutaElegida2 && rutaElegida2 === ruta) {
+            option2.selected = true;
+            }
+        }
+        }
+    });
+}
+
+    async function abrirModalNuevoCaminante() {
+    
+        let integrantes;
+        await gruposRef.child(grupoActual.id).child('integrantes').once('value', (snapshot) => {
+            integrantes = snapshot.val(); // Obtiene el valor de "integrantes"
+            console.log(integrantes); // Muestra el valor en la consola
+        });
+        if(parseInt(integrantes)>0){
+                
+        // Crear modal dinámicamente    
+            const modalNuevoCaminante = document.createElement('div');
+            modalNuevoCaminante.classList.add('modal', 'fade');
+            modalNuevoCaminante.id = 'modalNuevoCaminante';
+            modalNuevoCaminante.innerHTML = `
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Nuevo Caminante</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="formularioNuevoCaminante">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="tipoDocumento" class="form-label">*Tipo Documento</label>
+                                        <select class="form-control" id="tipoDocumento" required>
+                                            <option value="cedula">Cédula</option>
+                                            <option value="tarjeta">Tarjeta de Identidad</option>
+                                            <option value="pasaporte">Pasaporte</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="numeroDocumento" class="form-label">*Número Documento</label>
+                                        <input type="text" class="form-control" id="numeroDocumento" required onblur="buscarRegistro(true)">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="nombreCompleto" class="form-label">*Nombre Completo</label>
+                                        <input type="text" class="form-control" id="nombreCompleto" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="correoElectronico" class="form-label">*Correo Electrónico</label>
+                                        <input type="email" class="form-control" id="correoElectronico" required>
+                                    </div>
+                                    
+                                    <div class="col-md-6 mb-3">
+                                        <label for="tipoSangre" class="form-label">*Tipo de Sangre</label>
+                                        <select class="form-control" id="tipoSangre" required>
+                                            <option value="" disabled selected>Seleccione tipo de sangre</option>
+                                            <option value="a+">A+</option>
+                                            <option value="a-">A-</option>
+                                            <option value="b+">B+</option>
+                                            <option value="b-">B-</option>
+                                            <option value="o+">O+</option>
+                                            <option value="o-">O-</option>
+                                            <option value="ab+">AB+</option>
+                                            <option value="ab-">AB-</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="telefono" class="form-label">*Teléfono</label>
+                                        <input type="tel" class="form-control" id="telefono" required 
+                                            pattern="[0-9]{7,10}" 
+                                            title="Ingrese un número de 7 o 10 dígitos">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="genero" class="form-label">*Genero</label>
+                                        <select id="genero" class="form-control"  required>
+                                            <option value="" disabled selected>Seleccione el Género</option>
+                                            <option value="M">Masculino</option>
+                                            <option value="F">Femenino</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                    <label for="talla" class="form-label">*Talla de buso:</label>
+                                        <select id="talla" class="form-control" required>
+                                            <option value="" disabled selected>Talla</option>
+                                            <option value="xs">XS</option>
+                                            <option value="s">S</option>
+                                            <option value="m">M</option>
+                                            <option value="l">L</option>
+                                            <option value="xl">XL</option>
+                                            <option value="xxl">XXL</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="nombreContactoEmergencia" class="form-label">*Contacto de Emergencia</label>
+                                        <input type="text" class="form-control" id="nombreContactoEmergencia" placeholder="Nombre Completo" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="telefonoContactoEmergencia" class="form-label">*Teléfono de Contacto de Emergencia</label>
+                                        <input type="tel" class="form-control" id="telefonoContactoEmergencia" required 
+                                            pattern="[0-9]{7,10}" 
+                                            title="Ingrese un número de 7 o 10 dígitos">
+                                    </div>
+                                    <div class="col-md-12 mb-3">
+                                        <label for="condicionSalud" class="form-label">Condición de Salud:</label>
+                                        <textarea id="condicionSalud" placeholder="Describa su condición especial de salud si la tiene como Alergias, lesiones de rodillas, Asma, claustrofobia, Hipertensión, entre otras." class="form-control" ></textarea>
+                                    </div>
+                                    
+                                    <div class="col-md-6 mb-3">
+                                        <label for="ruta1" class="form-label">*Ruta 1 (Sábado)</label>
+                                        <select class="form-control" id="ruta1" required>
+                                            <option value="">Seleccione una ruta</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="ruta2" class="form-label">*Ruta 2 (Domingo)</label>
+                                        <select class="form-control" id="ruta2" required>
+                                            <option value="">Seleccione una ruta</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-primary" onclick="CrearEditar(false, null, grupoActual.id)">Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Agregar modal al body
+            document.body.appendChild(modalNuevoCaminante);
+
+            // Cargar rutas en los selects
+            cargarRutasEnSelect('ruta1','ruta2');
+
+            // Mostrar modal
+            const modal = new bootstrap.Modal(modalNuevoCaminante);
+            modal.show();
+
+            // Limpiar modal al cerrarse
+            modalNuevoCaminante.addEventListener('hidden.bs.modal', function () {
+                document.body.removeChild(modalNuevoCaminante);
+            });
+        }
+    else{
+        alert("Este grupo ya tiene todos los integrantes registrados")
+    }
+}
+        window.onload = function() {
+            cargarDatosGrupo();
+        }
+    </script>
+     <script>
+      document.addEventListener("DOMContentLoaded", function () {
+          const menuNav = document.getElementById("menuNav");
+          const titulo = document.getElementById("titulo");
+
+          menuNav.addEventListener("show.bs.collapse", function () {
+              titulo.style.display = "none"; // Oculta el título cuando el menú se despliega
+          });
+
+          menuNav.addEventListener("hide.bs.collapse", function () {
+              titulo.style.display = "block"; // Muestra el título cuando el menú se oculta
+          });
+      });
+  </script>
+  <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            function detectarDispositivo() {
+                const userAgent = navigator.userAgent.toLowerCase();
+                const body = document.body;
+
+                if (/mobile|android|iphone|ipod|blackberry|opera mini|iemobile|windows phone/i.test(userAgent)) {
+                    body.classList.add("movile"); // Para celulares
+                }  else {
+                    body.classList.add("pc"); // Para computadoras
+                }
+            }
+
+            detectarDispositivo();
+        });
+    </script>
+</body>
+</html>

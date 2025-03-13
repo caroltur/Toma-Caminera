@@ -1,0 +1,32 @@
+.containerNuevo{
+    width: 80%;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 0 5px 5px black;
+}
+.botonNuevoCaminante{
+    text-align: left;
+}
+.container-fluid .table-hover tbody tr:hover {
+    background-color: rgba(0,123,255,0.1);
+    cursor: pointer;
+}
+.pagination {
+    justify-content: center;
+}
+#busquedaRapida, #busquedaDetallada {
+    margin-bottom: 15px;
+}
+#registrosFaltantes{
+    font-size: clamp(0.8rem, 1.2vw, 2rem);
+    color: red;
+}
+#nombreGrupo{
+    text-align: left;
+}
+.movile {
+    font-size: clamp(0.8rem, 1.2vw, 2rem);
+}
+.movile .containerNuevo{
+    width: 90%;
+}
