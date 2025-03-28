@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vista de Grupo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-database-compat.js"></script>
+    <link rel="stylesheet" href="cabecera.css">
+    <link rel="stylesheet" href="vistaLider.css">
+    
+</head>
+<body>
+    
+    <div class="container-fluid containerNuevo mt-4">
+        <div class="row">
+            <div class="col-12">
+                <h2 id="nombreGrupo" class="mb-4"></h2>
+                
+                <!-- Sección de Búsqueda -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <input type="text" id="busquedaRapida" class="form-control" placeholder="Búsqueda rápida (nombre o documento)">
+                    </div>
+                    
+                </div>
+
+                <!-- Tabla de Caminantes -->
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover tablaCaminante" id="tablaCaminantes">
+                        <thead>
+                            <tr>
+                                <th>N°</th>
+                                <th>Nombre Completo</th>
+                                <th>Número Documento</th>
+                                <th>Ruta 1 (Sábado)</th>
+                                <th>Ruta 2 (Domingo)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cuerpoCaminantes"></tbody>
+                    </table>
+                    <h4 id="registrosFaltantes"></h4>
+                </div>
+
+                <!-- Paginación -->
+                <nav>
+                    <ul class="pagination" id="paginacion"></ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Búsqueda Detallada -->
+   
+
+    <!-- Modal Edición Caminante -->
+    
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Configuración Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBy4C0nQeGPgBUl7EWlMS9EyCxLSlM5jIE",
+            authDomain: "reservas-de2ec.firebaseapp.com",
+            databaseURL: "https://reservas-de2ec-default-rtdb.firebaseio.com",
+            projectId: "reservas-de2ec",
+            storageBucket: "reservas-de2ec.firebasestorage.app",
+            messagingSenderId: "248250096030",
+            appId: "1:248250096030:web:2052d817f7106b50115e8f"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        const registrosRef = db.ref('toma_caminera_2025');
+        const gruposRef = db.ref('grupos');
+        const rutasRef = db.ref('rutas');
+
+        let caminantesGrupo = [];
+        let grupoActual = null;
+        const REGISTROS_POR_PAGINA = 10;
+        let paginaActual = 1;
+
+        // Función para cargar datos del grupo y caminantes
+        
+
+        function cargarCaminantes(filtro = null) {
+            registrosRef.once('value', (snapshot) => {
+                caminantesGrupo = [];
+                snapshot.forEach((childSnapshot) => {
+                    const caminante = childSnapshot.val();
+                    caminante.id = childSnapshot.key;
+                    
+                    // Aplicar filtro si existe
+                    
+
+                    caminantesGrupo.push(caminante);
+                });
+                
+                mostrarPagina(paginaActual);
+                generarPaginacion();
+            });
+        }
+
+        function mostrarPagina(pagina) {
+            const inicio = (pagina - 1) * REGISTROS_POR_PAGINA;
+            const fin = inicio + REGISTROS_POR_PAGINA;
+            const caminantesPagina = caminantesGrupo.slice(inicio, fin);
+
+            const cuerpoCaminantes = document.getElementById('cuerpoCaminantes');
+            cuerpoCaminantes.innerHTML = '';
+            var contadorCaminanteGrupo=0;
+            caminantesPagina.forEach(caminante => {
+                const fila = document.createElement('tr');
+                fila.innerHTML = `
+                    <td>${++contadorCaminanteGrupo}</td>
+                    <td>${caminante.nombreCompleto}</td>
+                    <td>${caminante.numeroDocumento}</td>
+                    <td>${caminante.ruta1}</td>
+                    <td>${caminante.ruta2}</td>
+                    
+                `;
+                cuerpoCaminantes.appendChild(fila);
+            });
+        }
+
+        function generarPaginacion() {
+            const totalPaginas = Math.ceil(caminantesGrupo.length / REGISTROS_POR_PAGINA);
+            const paginacion = document.getElementById('paginacion');
+            paginacion.innerHTML = '';
+
+            for (let i = 1; i <= totalPaginas; i++) {
+                const li = document.createElement('li');
+                li.classList.add('page-item', i === paginaActual ? 'active' : '');
+                li.innerHTML = `<a class="page-link" href="#" onclick="cambiarPagina(${i})">${i}</a>`;
+                paginacion.appendChild(li);
+            }
+        }
+
+        function cambiarPagina(nuevaPagina) {
+            paginaActual = nuevaPagina;
+            mostrarPagina(nuevaPagina);
+            generarPaginacion();
+        }
+
+        // Función de búsqueda rápida
+        document.getElementById('busquedaRapida').addEventListener('input', function() {
+            const textoBusqueda = (this.value || "").toLowerCase();
+            if (!Array.isArray(caminantesGrupo)) {
+                console.error("caminantesGrupo no está inicializado o no es un array.");
+                return;
+            }
+            const caminantesFiltrados = caminantesGrupo.filter(c => {
+                if (!c.nombreCompleto || !c.numeroDocumento) {
+                    return false; // Excluir objetos inválidos
+                }
+                return c.nombreCompleto.toLowerCase().includes(textoBusqueda) || 
+                    c.numeroDocumento.includes(textoBusqueda);
+            });
+            
+            const cuerpoCaminantes = document.getElementById('cuerpoCaminantes');
+            cuerpoCaminantes.innerHTML = '';
+            var contadorCaminanteGrupo=0;
+            caminantesFiltrados.forEach(caminante => {
+                const fila = document.createElement('tr');
+                fila.innerHTML = `
+                    <td>${++contadorCaminanteGrupo}</td>
+                    <td>${caminante.nombreCompleto}</td>
+                    <td>${caminante.numeroDocumento}</td>
+                    <td>${caminante.ruta1}</td>
+                    <td>${caminante.ruta2}</td>
+                `;
+                cuerpoCaminantes.appendChild(fila);
+            });
+        });
+
+        
+        window.onload = function() {
+            cargarCaminantes();
+        }
+    </script>
+
+     <script>
+      document.addEventListener("DOMContentLoaded", function () {
+          const menuNav = document.getElementById("menuNav");
+          const titulo = document.getElementById("titulo");
+
+          menuNav.addEventListener("show.bs.collapse", function () {
+              titulo.style.display = "none"; // Oculta el título cuando el menú se despliega
+          });
+
+          menuNav.addEventListener("hide.bs.collapse", function () {
+              titulo.style.display = "block"; // Muestra el título cuando el menú se oculta
+          });
+      });
+  </script>
+  <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            function detectarDispositivo() {
+                const userAgent = navigator.userAgent.toLowerCase();
+                const body = document.body;
+
+                if (/mobile|android|iphone|ipod|blackberry|opera mini|iemobile|windows phone/i.test(userAgent)) {
+                    body.classList.add("movile"); // Para celulares
+                }  else {
+                    body.classList.add("pc"); // Para computadoras
+                }
+            }
+
+            detectarDispositivo();
+        });
+    </script>
+</body>
+</html>
