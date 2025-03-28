@@ -47,5 +47,35 @@
             max-width: 900px;
         }
     </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const menuNav = document.getElementById("menuNav");
+            const titulo = document.getElementById("titulo");
+  
+            menuNav.addEventListener("show.bs.collapse", function () {
+                titulo.style.display = "none"; // Oculta el título cuando el menú se despliega
+            });
+  
+            menuNav.addEventListener("hide.bs.collapse", function () {
+                titulo.style.display = "block"; // Muestra el título cuando el menú se oculta
+            });
+        });
+    </script>
+    <script>
+          document.addEventListener("DOMContentLoaded", function () {
+              function detectarDispositivo() {
+                  const userAgent = navigator.userAgent.toLowerCase();
+                  const body = document.body;
+  
+                  if (/mobile|android|iphone|ipod|blackberry|opera mini|iemobile|windows phone/i.test(userAgent)) {
+                      body.classList.add("movile"); // Para celulares
+                  }  else {
+                      body.classList.add("pc"); // Para computadoras
+                  }
+              }
+  
+              detectarDispositivo();
+          });
+      </script>
 </body>
 </html>
