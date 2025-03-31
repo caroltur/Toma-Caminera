@@ -132,7 +132,7 @@
 
             for (let i = 1; i <= totalPaginas; i++) {
                 const li = document.createElement('li');
-                li.classList.add('page-item', i === paginaActual ? 'active' : '');
+                li.classList.add('page-item', i === paginaActual ? 'active' : 'noActivie');
                 li.innerHTML = `<a class="page-link" href="#" onclick="cambiarPagina(${i})">${i}</a>`;
                 paginacion.appendChild(li);
             }
