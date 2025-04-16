@@ -29,3 +29,27 @@
     width: 100%;    
     justify-content: center;
 }
+
+
+.colum2 select{
+}
+.colum2 {
+  display: flex;
+  align-items: center; /* Centra verticalmente */
+  gap: 1rem; /* Espacio entre input y la imagen */
+}
+
+.input-col {
+  flex: 1; /* Ocupa todo el espacio disponible */
+}
+
+.colum2 img {
+  width: 50%;
+  max-width: 100%;
+  height: auto;
+}
+
+.gene{
+    display: flex;
+    align-items: center;
+}

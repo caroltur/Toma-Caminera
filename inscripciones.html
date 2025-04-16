@@ -62,7 +62,7 @@
 
         <!-- Sección de Datos Personales del Líder -->
         <div id="caminante" class="form-section">
-            <h2 class="text-center mb-4">Datos del Lider</h2>
+            <h2 class="text-center mb-4">Datos Personales</h2>
             
             <form id="formularioLider">
                  <div class="row">
@@ -106,17 +106,20 @@
                             pattern="[0-9]{7,10}" 
                             title="Ingrese un número de 7 o 10 dígitos">
                     </div>
-                    <div class="col-md-6 mb-3">
+                    <div class="col-md-6 mb-3 gene">
+                        <div class="input-col">
                         <label for="genero" class="form-label">*Genero</label>
                         <select id="genero" class="form-control"  required>
                             <option value="" disabled selected>Seleccione el Género</option>
                             <option value="M">Masculino</option>
                             <option value="F">Femenino</option>
                         </select>
+                        </div>
                     </div>
-                    <div class="col-md-6 mb-3">
-                    <label for="talla" class="form-label">*Talla de buso:</label>
-                        <select id="talla" class="form-control" required>
+                    <div class="col-md-6 mb-3 colum2">
+                        <div class="input-col">
+                            <label for="talla" class="form-label talla">*Talla de buso:</label>
+                            <select id="talla" class="form-control" required>
                             <option value="" disabled selected>Talla</option>
                             <option value="xs">XS</option>
                             <option value="s">S</option>
@@ -124,8 +127,11 @@
                             <option value="l">L</option>
                             <option value="xl">XL</option>
                             <option value="xxl">XXL</option>
-                        </select>
+                            </select>
+                        </div>
+                        <img src="img/medidas.png" alt="Vista previa">
                     </div>
+
                     <div class="col-md-6 mb-3">
                         <label for="nombreContactoEmergencia" class="form-label">*Contacto de Emergencia</label>
                         <input type="text" class="form-control" id="nombreContactoEmergencia" placeholder="Nombre Completo" required>
@@ -163,7 +169,7 @@
 
         <!-- Sección de Datos Personales del Líder -->
         <div id="datosPersonalesLider" class="form-section">
-            <h2 class="text-center mb-4">Datos del Lider</h2>
+            <h2 class="text-center mb-4">Datos Personales</h2>
             
             <form id="formularioLider">
                 <div class="form-group mb-3">
