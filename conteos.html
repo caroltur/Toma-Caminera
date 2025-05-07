@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vista de Grupo</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-database-compat.js"></script>
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="cabecera.css">
+    <link rel="stylesheet" href="vistaLider.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Conteo de Datos</h1>
+
+        <!-- Contenedor para mostrar los resultados -->
+        <div id="resultado" class="mt-4"></div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Script principal -->
+    <script>
+        // Configuración Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBy4C0nQeGPgBUl7EWlMS9EyCxLSlM5jIE",
+            authDomain: "reservas-de2ec.firebaseapp.com",
+            databaseURL: "https://reservas-de2ec-default-rtdb.firebaseio.com",
+            projectId: "reservas-de2ec",
+            storageBucket: "reservas-de2ec.firebasestorage.app",
+            messagingSenderId: "248250096030",
+            appId: "1:248250096030:web:2052d817f7106b50115e8f"
+        };
+
+        // Inicializar Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        const registrosRef = db.ref('toma_caminera_2025');
+
+        // Función para contar las tallas, ruta1 y ruta2
+        async function contarDatos() {
+            try {
+                // Obtiene los datos de la base de datos
+                const snapshot = await registrosRef.once('value');
+
+                if (!snapshot.exists()) {
+                    document.getElementById('resultado').innerHTML = `<p class="text-center text-danger">No hay datos en la base de datos.</p>`;
+                    return;
+                }
+
+                const data = snapshot.val();
+
+                // Objetos para almacenar los conteos
+                const conteoTallas = {};
+                const conteoRuta1 = {};
+                const conteoRuta2 = {};
+
+                // Itera sobre los caminantes
+                for (const key in data) {
+                    const caminante = data[key];
+
+                    // Conteo de tallas
+                    const talla = caminante.talla;
+                    if (talla) {
+                        if (!conteoTallas[talla]) {
+                            conteoTallas[talla] = 0;
+                        }
+                        conteoTallas[talla]++;
+                    }
+
+                    // Conteo de ruta1
+                    const ruta1 = caminante.ruta1;
+                    if (ruta1) {
+                        if (!conteoRuta1[ruta1]) {
+                            conteoRuta1[ruta1] = 0;
+                        }
+                        conteoRuta1[ruta1]++;
+                    }
+
+                    // Conteo de ruta2
+                    const ruta2 = caminante.ruta2;
+                    if (ruta2) {
+                        if (!conteoRuta2[ruta2]) {
+                            conteoRuta2[ruta2] = 0;
+                        }
+                        conteoRuta2[ruta2]++;
+                    }
+                }
+
+                // Genera el HTML para mostrar los resultados
+                let resultadoHTML = '';
+
+                // Resultados de tallas
+                resultadoHTML += '<h3>Tallas</h3>';
+                if (Object.keys(conteoTallas).length === 0) {
+                    resultadoHTML += '<p>No hay datos de tallas.</p>';
+                } else {
+                    resultadoHTML += '<ul class="list-group">';
+                    for (const talla in conteoTallas) {
+                        resultadoHTML += `
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Talla ${talla}
+                                <span class="badge bg-primary rounded-pill">${conteoTallas[talla]}</span>
+                            </li>
+                        `;
+                    }
+                    resultadoHTML += '</ul>';
+                }
+
+                // Resultados de rutas en una tabla unificada
+                resultadoHTML += '<h3 class="mt-4">Rutas por Día</h3>';
+                const todasLasRutas = new Set([...Object.keys(conteoRuta1), ...Object.keys(conteoRuta2)]);
+                if (todasLasRutas.size === 0) {
+                    resultadoHTML += '<p>No hay datos de rutas.</p>';
+                } else {
+                    resultadoHTML += `
+                        <table class="table table-striped table-bordered">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Nombre de la Ruta</th>
+                                    <th>Cantidad Día 1</th>
+                                    <th>Cantidad Día 2</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    `;
+                    todasLasRutas.forEach(ruta => {
+                        const cantidadDia1 = conteoRuta1[ruta] || 0;
+                        const cantidadDia2 = conteoRuta2[ruta] || 0;
+                        resultadoHTML += `
+                            <tr>
+                                <td>${ruta}</td>
+                                <td>${cantidadDia1}</td>
+                                <td>${cantidadDia2}</td>
+                            </tr>
+                        `;
+                    });
+                    resultadoHTML += `
+                            </tbody>
+                        </table>
+                    `;
+                }
+
+                // Muestra los resultados en la vista
+                document.getElementById('resultado').innerHTML = resultadoHTML;
+
+            } catch (error) {
+                document.getElementById('resultado').innerHTML = `<p class="text-center text-danger">Error al obtener los datos: ${error.message}</p>`;
+            }
+        }
+
+        // Llama a la función cuando la página cargue
+        window.onload = contarDatos;
+
+        // Detectar dispositivo
+        document.addEventListener("DOMContentLoaded", function () {
+            function detectarDispositivo() {
+                const userAgent = navigator.userAgent.toLowerCase();
+                const body = document.body;
+
+                if (/mobile|android|iphone|ipod|blackberry|opera mini|iemobile|windows phone/i.test(userAgent)) {
+                    body.classList.add("movile"); // Para celulares
+                } else {
+                    body.classList.add("pc"); // Para computadoras
+                }
+            }
+
+            detectarDispositivo();
+        });
+    </script>
+</body>
+</html>
