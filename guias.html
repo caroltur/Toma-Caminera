@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toma Caminera </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-database-compat.js"></script>
+    <link rel="stylesheet" href="cabecera.css">
+    <link href="inscripciones.css" rel="stylesheet">
+    <script>
+        
+       
+    </script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg encabezado">
+        <div class="container-fluid">
+            <!-- Botón menú hamburguesa -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuNav">
+                <span>&#9776;</span> <!-- Ícono de hamburguesa -->
+            </button>
+
+            <!-- Menú -->
+            <div class="collapse navbar-collapse" id="menuNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 menu">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Rutas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="reservas.html">Reservas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="inscripciones.html">Inscripciones</a></li>
+                    <li class="nav-item"><a class="nav-link" href="programacion.html">Programación</a></li>
+                </ul>
+            </div>
+
+            <!-- Título -->
+            <div id="titulo" class="titulo">
+                <h1 class="h4">Carolina Mágica</h1>
+                <p class="m-0">Senderos y Cascadas</p>
+            </div>
+        </div>
+    </nav>
+        
+    
+
+        <!-- Sección de Datos Personales del Líder -->
+        <div id="caminante" class="form-section2">
+            <h2 class="text-center mb-4">Datos Personales</h2>
+            
+            <form id="formularioLider">
+                 <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="nombreCompleto" class="form-label">*Nombre Completo</label>
+                        <input type="text" class="form-control" id="nombreCompleto" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="correoElectronico" class="form-label">*Correo Electrónico</label>
+                        <input type="email" class="form-control" id="correoElectronico" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="tipoDocumento" class="form-label">*Tipo Documento</label>
+                        <select class="form-control" id="tipoDocumento" required>
+                            <option value="cedula">Cédula</option>
+                            <option value="tarjeta">Tarjeta de Identidad</option>
+                            <option value="pasaporte">Pasaporte</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="numeroDocumento" class="form-label">*Número Documento</label>
+                        <input type="text" class="form-control" id="numeroDocumento" >
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="tipoSangre" class="form-label">*Tipo de Sangre</label>
+                        <select class="form-control" id="tipoSangre" required>
+                            <option value="" disabled selected>Seleccione tipo de sangre</option>
+                            <option value="a+">A+</option>
+                            <option value="a-">A-</option>
+                            <option value="b+">B+</option>
+                            <option value="b-">B-</option>
+                            <option value="o+">O+</option>
+                            <option value="o-">O-</option>
+                            <option value="ab+">AB+</option>
+                            <option value="ab-">AB-</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="telefono" class="form-label">*Teléfono</label>
+                        <input type="tel" class="form-control" id="telefono" required 
+                            pattern="[0-9]{7,10}" 
+                            title="Ingrese un número de 7 o 10 dígitos">
+                    </div>
+                    <div class="col-md-6 mb-3 gene">
+                        <div class="input-col">
+                        <label for="genero" class="form-label">*Genero</label>
+                        <select id="genero" class="form-control"  required>
+                            <option value="" disabled selected>Seleccione el Género</option>
+                            <option value="M">Masculino</option>
+                            <option value="F">Femenino</option>
+                        </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3 colum2">
+                        <div class="input-col">
+                            <label for="talla" class="form-label talla">*Talla de buso:</label>
+                            <select id="talla" class="form-control" required>
+                            <option value="" disabled selected>Talla</option>
+                            <option value="xs">XS</option>
+                            <option value="s">S</option>
+                            <option value="m">M</option>
+                            <option value="l">L</option>
+                            <option value="xl">XL</option>
+                            <option value="xxl">XXL</option>
+                            </select>
+                        </div>
+                        <img src="img/medidas.png" alt="Vista previa">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="nombreContactoEmergencia" class="form-label">*Contacto de Emergencia</label>
+                        <input type="text" class="form-control" id="nombreContactoEmergencia" placeholder="Nombre Completo" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="telefonoContactoEmergencia" class="form-label">*Teléfono de Contacto de Emergencia</label>
+                        <input type="tel" class="form-control" id="telefonoContactoEmergencia" required 
+                            pattern="[0-9]{7,10}" 
+                            title="Ingrese un número de 7 o 10 dígitos">
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label for="condicionSalud" class="form-label">Condición de Salud:</label>
+                        <textarea id="condicionSalud" placeholder="Describa su condición especial de salud si la tiene como Alergias, lesiones de rodillas, Asma, claustrofobia, Hipertensión, entre otras." class="form-control" ></textarea>
+                    </div>
+                    
+                </div>
+            </form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="CrearEditarGuia(false, null)">Guardar</button>
+            </div>
+        </div>
+
+
+        
+    </div>
+    
+    <script src="script.js"></script>
+    <script>
+        // Configuración de Firebase 
+        const firebaseConfig = {
+            apiKey: "AIzaSyBy4C0nQeGPgBUl7EWlMS9EyCxLSlM5jIE",
+            authDomain: "reservas-de2ec.firebaseapp.com",
+            databaseURL: "https://reservas-de2ec-default-rtdb.firebaseio.com",
+            projectId: "reservas-de2ec",
+            storageBucket: "reservas-de2ec.firebasestorage.app",
+            messagingSenderId: "248250096030",
+            appId: "1:248250096030:web:2052d817f7106b50115e8f"
+          };
+        
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        const codigosRef = db.ref('codigos_acceso');
+        const lideresRef = db.ref('lideres_grupos');
+        const caminanteRef = db.ref('toma_caminera_2025');
+        const registrosGuia = db.ref('guias');
+        const gruposRef = db.ref('grupos');
+        const rutasRef = db.ref('rutas');
+
+        function generarCodigoUnico(cedula) {
+            if (!cedula || cedula.length < 7) {
+                return "ERROR";
+            }
+            let hash = 0;
+            for (let i = 0; i < cedula.length; i++) {
+                hash = (hash << 5) - hash + cedula.charCodeAt(i);
+                hash |= 0;
+            }
+            return Math.abs(hash).toString(36).toUpperCase().slice(0, 6);
+        }
+
+        
+
+        function guardarDatosLider() {
+            const cedula = document.getElementById('cedula').value.trim();
+            const nombreCompleto = document.getElementById('nombreCompletoLider').value.trim();
+            const tipoDocumento = document.getElementById('tipoDocumentoLider').value;
+            const telefono = document.getElementById('telefonoLider').value.trim();
+            const correo = document.getElementById('correoLider').value.trim();
+            const nombreGrupo = document.getElementById('nombreGrupo').value.trim();
+
+            // Validaciones
+            if (!nombreCompleto || !telefono || !correo || !nombreGrupo) {
+                alert('Por favor complete todos los campos');
+                return;
+            }
+
+            // Crear nuevo grupo o actualizar existente
+            gruposRef.orderByChild('liderCedula').equalTo(cedula).once('value', (grupoSnapshot) => {
+                const grupoExistente = grupoSnapshot.val();
+                let grupoKey; // Declara grupoKey fuera de los bloques if/else
+
+                if (grupoExistente) {
+                    // Actualizar grupo existente
+                    grupoKey = Object.keys(grupoExistente)[0];
+                    gruposRef.child(grupoKey).update({
+                        nombre: nombreGrupo,
+                        fechaCreacion: new Date().toISOString()
+                    }).then(() => {
+                        console.log('Grupo actualizado correctamente.');
+                        guardarLiderYcaminante(grupoKey); // Llama a la función para guardar líder y caminante
+                    }).catch(error => {
+                        console.error('Error al actualizar grupo:', error);
+                        alert('Hubo un error al actualizar el grupo.');
+                    });
+                } else {
+                    // Crear nuevo grupo
+                    const nuevoGrupoRef = gruposRef.push();
+                    grupoKey = nuevoGrupoRef.key; // Asigna la clave a grupoKey
+                    nuevoGrupoRef.set({
+                        nombre: nombreGrupo,
+                        liderCedula: cedula,
+                        fechaCreacion: new Date().toISOString()
+                    }).then(() => {
+                        console.log('Grupo creado correctamente.');
+                        guardarLiderYcaminante(grupoKey); // Llama a la función para guardar líder y caminante
+                    }).catch(error => {
+                        console.error('Error al crear grupo:', error);
+                        alert('Hubo un error al crear el grupo.');
+                    });
+                }
+            });
+
+            function guardarLiderYcaminante(grupoKey) {
+                // Guardar datos del líder
+                const nuevoLiderRef = lideresRef.push();
+                nuevoLiderRef.set({
+                    cedula: cedula,
+                    nombreCompleto: nombreCompleto,
+                    tipoDocumento: tipoDocumento,
+                    telefono: telefono,
+                    correoElectronico: correo,
+                    grupo: grupoKey // Utiliza la clave obtenida
+                }).then(() => {
+                    // Guardar datos del caminante
+                    const nuevoLiderCamina = caminanteRef.push();
+                    nuevoLiderCamina.set({
+                        numeroDocumento: cedula,
+                        nombreCompleto: nombreCompleto,
+                        tipoDocumento: tipoDocumento,
+                        telefono: telefono,
+                        correoElectronico: correo,
+                        grupoID: grupoKey // Utiliza la clave obtenida
+                    }).then(() => {
+                        window.location.href = 'vistaLider.html?cedula=' + cedula;
+                    }).catch(error => {
+                        console.error('Error al guardar datos del caminante:', error);
+                        alert('Hubo un error al guardar los datos del caminante.');
+                    });
+                }).catch(error => {
+                    console.error('Error al guardar datos del líder:', error);
+                    alert('Hubo un error al guardar los datos del líder.');
+                });
+            }
+        }
+        // Generar y almacenar códigos de acceso (esto normalmente se haría en un backend)
+       function cargarRutas() {
+      const selectRuta1 = document.getElementById('ruta1');
+      const selectRuta2 = document.getElementById('ruta2');
+
+      rutasRef.once('value', (snapshot) => {
+        const rutas = snapshot.val();
+        const fecha = new Date();
+
+        // Limpia los selects antes de agregar las opciones
+        selectRuta1.innerHTML = '<option value="">Selecciona una ruta</option>';
+        selectRuta2.innerHTML = '<option value="">Selecciona una ruta</option>';
+
+        for (const ruta in rutas) {
+          const cupos = rutas[ruta].cupos['sabado'];
+          const cupos2 = rutas[ruta].cupos['domingo'];
+          if (cupos > 0) {
+            const option1 = document.createElement('option');
+            option1.value = ruta;
+            option1.text = `${ruta} (cupos ${cupos})`;
+            selectRuta1.appendChild(option1);
+          }
+          if(cupos2>0){
+            const option2 = document.createElement('option');
+            option2.value = ruta;
+            option2.text = `${ruta} (cupos ${cupos2})`;
+            selectRuta2.appendChild(option2);
+          }
+        }
+      });
+    }
+    
+
+    window.onload = function() {
+            localStorage.removeItem("Caminante_registrado");
+            cargarRutas();
+            cargarRutasEnSelect('ruta1','ruta2');
+          };
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+          const menuNav = document.getElementById("menuNav");
+          const titulo = document.getElementById("titulo");
+
+          menuNav.addEventListener("show.bs.collapse", function () {
+              titulo.style.display = "none"; // Oculta el título cuando el menú se despliega
+          });
+
+          menuNav.addEventListener("hide.bs.collapse", function () {
+              titulo.style.display = "block"; // Muestra el título cuando el menú se oculta
+          });
+      });
+  </script>
+  <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            function detectarDispositivo() {
+                const userAgent = navigator.userAgent.toLowerCase();
+                const body = document.body;
+
+                if (/mobile|android|iphone|ipod|blackberry|opera mini|iemobile|windows phone/i.test(userAgent)) {
+                    body.classList.add("movile"); // Para celulares
+                }  else {
+                    body.classList.add("pc"); // Para computadoras
+                }
+            }
+
+            detectarDispositivo();
+        });
+    </script>
+</body>
+</html>

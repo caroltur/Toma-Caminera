@@ -87,10 +87,57 @@ function cerrarModal() {
 
 // Ejemplo de uso
 
+async function CrearEditarGuia(Editar = false, registroId) {
+    if(validarFormulario()){
 
+    
 
+    try {
+        let nuevoRegistro = {
+            nombreCompleto: document.getElementById('nombreCompleto').value,
+            tipoDocumento: document.getElementById('tipoDocumento').value,
+            numeroDocumento: document.getElementById('numeroDocumento').value,
+            tipoSangre: document.getElementById('tipoSangre').value,
+            telefono: document.getElementById('telefono').value,
+            genero: document.getElementById('genero').value,
+            talla: document.getElementById('talla').value,
+            correoElectronico: document.getElementById('correoElectronico').value,
+            nombreContactoEmergencia: document.getElementById('nombreContactoEmergencia').value,
+            telefonoContactoEmergencia: document.getElementById('telefonoContactoEmergencia').value,
+            condicionSalud: document.getElementById('condicionSalud').value || "Ninguna",
+            fechaRegistro: new Date().toISOString()
+        };
 
+        
 
+        if (!Editar) {
+            nuevoRegistro.grupoID = "Guia";
+
+            
+                const nuevoCaminanteRef = registrosGuia.push();
+                await nuevoCaminanteRef.set(nuevoRegistro);
+                alert('Caminante registrado exitosamente');
+        } else {
+            const datosAntiguosSnapshot = await registrosGuia.child(registroId).once('value');
+            const datosAntiguos = datosAntiguosSnapshot.val();
+
+            await registrosGuia.child(registroId).update(nuevoRegistro);
+
+            const modal = bootstrap.Modal.getInstance(document.getElementById('modalNuevoCaminante'));
+            if (modal) modal.hide();
+            else console.error('El modal no se encontró.');
+
+            cargarCaminantes();
+            alert('Datos actualizados correctamente.');
+        }
+
+        window.location.reload();
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Ocurrió un error. Por favor, inténtalo de nuevo.');
+    }
+    }
+}
 async function CrearEditar(Editar = false, registroId, grupo_id) {
     if(validarFormulario()){
     let ruta1, ruta2, cuposRuta1 = null, cuposRuta2 = null;
@@ -434,4 +481,40 @@ async function buscarRegistro(crear=false) {
       });
     }
 
-/*<button type="button" class="btn btn-primary" onclick="guardarEdicion('${id}')">Guardar Cambios 1</button>*/
+
+    async function Grupo(id) {
+        return new Promise((resolve, reject) => {
+            gruposRef.orderByChild('liderCedula').equalTo(id).once('value', (snapshot) => {
+                const registro = snapshot.val();
+                
+                if (registro) {
+                    const registroId = Object.keys(registro)[0]; // Obtener el ID del registro
+                    const datos = registro[registroId];
+                    resolve(datos.nombre); // Devuelve el nombre correctamente
+                } else {
+                    resolve(null); // Si no hay datos, devuelve null
+                }
+            }, (error) => reject(error)); // Manejo de errores
+        });
+    }
+
+    async function Lider(id) {
+        //console.log(registrosRef)
+        
+        return new Promise((resolve, reject) => {
+            //gruposRef.orderByChild('liderCedula').equalTo(id).once('value', (snapshot) => {
+            registrosRef.orderByChild('numeroDocumento').equalTo(id).once('value', (snapshot) => {
+                
+                const registro = snapshot.val();
+                
+                if (registro) {
+                    const registroId = Object.keys(registro)[0]; // Obtener el ID del registro
+                    const datos = registro[registroId];
+                    resolve(datos.nombreCompleto); // Devuelve el nombre correctamente
+                } else {
+                    resolve(null); // Si no hay datos, devuelve null
+                }
+            }, (error) => reject(error)); // Manejo de errores
+        });
+    }
+    
