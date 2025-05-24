@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración de Grupos</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap @5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons @1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js "></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-database-compat.js "></script>
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="cabecera.css">
+    <link rel="stylesheet" href="entrega.css">
+
+
+
+
+    </head>
+<body>
+    <div class="container-fluid containerNuevo mt-4">
+        <h1 class="text-center">Administración de Grupos</h1>
+         <!-- Barra de búsqueda -->
+        <div class="row mb-3">
+            <div class="col-md-6 align-self-start "> <!-- Alineación a la izquierda -->
+                <input type="text" id="busquedaRapida" class="form-control" placeholder="Buscar por nombre o cédula">
+            </div>
+        </div>
+
+
+
+        <!-- Tabla de Grupos -->
+        <div class="table-responsive">
+            <table class="table table-striped table-hover tablaGrupos" id="tablaGrupos">
+                <thead>
+                    <tr>
+                        <th>N°</th>
+                        <th>Nombre</th>
+                        <th>Cédula</th>
+                        <th>Nombre del Grupo</th>
+                        <th>Integrantes</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="cuerpoGrupos"></tbody>
+            </table>
+        </div>
+    </div>
+    <!-- Bootstrap JS -->
+   <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Configuración Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBy4C0nQeGPgBUl7EWlMS9EyCxLSlM5jIE",
+            authDomain: "reservas-de2ec.firebaseapp.com",
+            databaseURL: "https://reservas-de2ec-default-rtdb.firebaseio.com",
+            projectId: "reservas-de2ec",
+            storageBucket: "reservas-de2ec.firebasestorage.app",
+            messagingSenderId: "248250096030",
+            appId: "1:248250096030:web:2052d817f7106b50115e8f"
+        };
+        
+        firebase.initializeApp(firebaseConfig)
+        const db = firebase.database();
+        const gruposRef = db.ref('grupos');
+        const lideresGruposRef = db.ref('lideres_grupos');
+        const tomaCamineraRef = db.ref('toma_caminera_2025');
+
+        let datosActuales = [];
+        let lideres = {};
+
+        // Función para cargar datos de grupos
+        async function cargarGrupos() {
+            try {
+                // Obtener todos los grupos
+                const snapshotGrupos = await gruposRef.once('value');
+                if (!snapshotGrupos.exists()) {
+                    document.getElementById('cuerpoGrupos').innerHTML = '<tr><td colspan="6">No hay grupos disponibles.</td></tr>';
+                    return;
+                }
+
+                const grupos = [];
+                snapshotGrupos.forEach((childSnapshot) => {
+                    const grupo = childSnapshot.val();
+                    grupo.id = childSnapshot.key; // Guardar el ID del grupo
+                    grupos.push(grupo);
+                });
+                
+
+                const snapshotLideres = await lideresGruposRef.once('value');
+                lideres = {};
+                if (snapshotLideres.exists()) {
+                    snapshotLideres.forEach((childSnapshot) => {
+                        const lider = childSnapshot.val();
+                        lideres[lider.cedula] = lider.nombreCompleto; // Mapear cédula -> nombreCompleto
+                    });
+                }
+
+
+            const snapshotCaminantes = await tomaCamineraRef.once('value');
+                if (snapshotCaminantes.exists()) {
+                    snapshotCaminantes.forEach((childSnapshot) => {
+                        const caminante = childSnapshot.val();
+                        caminante.id = childSnapshot.key; // Guardar el ID del caminante
+
+                        // Solo incluir caminantes con grupoID: "Independiente"
+                        if (caminante.grupoID === 'Independiente') {
+                            grupos.push({
+                                id: caminante.id,
+                                liderCedula: caminante.numeroDocumento,
+                                nombre: 'Independiente',
+                                inscritos: 1,
+                                entregado: caminante.entregado || false,
+                                novedad: caminante.novedad||'',
+                                nombreCompleto: caminante.nombreCompleto,
+                                numeroDocumento: caminante.numeroDocumento
+                            });
+                        }
+                    });
+                }
+                datosActuales = grupos;
+                // Mostrar los grupos en la tabla
+                mostrarGrupos(grupos, lideres);
+            } catch (error) {
+                console.error("Error al obtener los grupos:", error);
+            }
+        }
+
+
+
+
+        // Función para mostrar los grupos en la tabla
+        function mostrarGrupos(grupos, lideres) {
+            const cuerpoGrupos = document.getElementById('cuerpoGrupos');
+            cuerpoGrupos.innerHTML = '';
+            let contador=0;
+            grupos.forEach(async (grupo) => {
+                // Obtener el nombre del líder usando la cédula
+                let nombreLider = 'N/A';
+                if (grupo.liderCedula && lideres[grupo.liderCedula]) {
+                    nombreLider = lideres[grupo.liderCedula];
+                } else if (grupo.nombreCompleto) {
+                    // Para caminantes independientes
+                    nombreLider = grupo.nombreCompleto;
+                }
+
+                // Crear fila para el grupo
+                const fila = document.createElement('tr');
+
+
+                 if (grupo.entregado) {
+                    fila.classList.add('fila-entregada'); // Clase para resaltar la fila
+                }
+
+
+                fila.innerHTML = `
+                    <td>${++contador}</td>
+                    <td>${nombreLider}</td>
+                    <td>${grupo.liderCedula}</td>
+                    <td>${grupo.nombre}</td>
+                    <td>${grupo.inscritos}</td>
+                    <td>
+                        <span id="estado-${grupo.id}">${grupo.entregado ? 'Entregado' : 'Pendiente'}</span>
+                        ${grupo.novedad ? `<div class="text-muted small">(${grupo.novedad})</div>` : ''}
+                    </td>
+                    <td>
+                        ${
+                            grupo.entregado
+                                ? '' // No mostrar nada si ya está entregado
+                                : `
+                                    <div class="input-group">
+                                        <input type="text" id="novedad-${grupo.id}" class="form-control form-control-sm" placeholder="Agregar novedad">
+                                        <button class="btn btn-success btn-sm" onclick="marcarComoEntregado('${grupo.id}')">
+                                            <i class="bi bi-check-circle"></i> Entregado
+                                        </button>
+                                    </div>
+                                `
+                        }
+                    </td>
+                `;
+                cuerpoGrupos.appendChild(fila);
+            });
+        }
+
+        // Función para marcar un grupo o caminante como entregado
+async function marcarComoEntregado(grupoId) {
+    const novedadInput = document.getElementById(`novedad-${grupoId}`);
+    const novedad = novedadInput.value.trim(); // Obtener el valor del input
+
+    try {
+        // Determinar si es un grupo o un caminante independiente
+        const snapshotGrupos = await gruposRef.child(grupoId).once('value');
+        const snapshotCaminantes = await tomaCamineraRef.child(grupoId).once('value');
+
+        let refToUpdate;
+        if (snapshotGrupos.exists()) {
+            // Es un grupo
+            refToUpdate = gruposRef.child(grupoId);
+        } else if (snapshotCaminantes.exists()) {
+            // Es un caminante independiente
+            refToUpdate = tomaCamineraRef.child(grupoId);
+        } else {
+            console.error("El ID no corresponde a un grupo ni a un caminante independiente.");
+            return;
+        }
+
+        // Actualizar el estado en la base de datos
+        await refToUpdate.update({
+            entregado: true,
+            ...(novedad && { novedad }) // Agregar la novedad solo si hay texto
+        });
+
+        /* Actualizar la vista
+        const estadoElemento = document.getElementById(`estado-${grupoId}`);
+        estadoElemento.textContent = 'Entregado';
+
+        if (novedad) {
+            const novedadElemento = document.createElement('div');
+            novedadElemento.className = 'text-muted small';
+            novedadElemento.textContent = `(${novedad})`;
+            estadoElemento.parentNode.appendChild(novedadElemento);
+        }*/
+        window.location.reload();
+    } catch (error) {
+        console.error("Error al actualizar el estado:", error);
+    }
+}
+function filtrarDatos() {
+            const textoBusqueda = document.getElementById('busquedaRapida').value.toLowerCase();
+            const datosFiltrados = datosActuales.filter(dato => {
+                const nombreMatch = dato.nombreCompleto?.toLowerCase().includes(textoBusqueda);
+                const cedulaMatch = `${dato.liderCedula || dato.numeroDocumento}`.includes(textoBusqueda);
+                return nombreMatch || cedulaMatch;
+            });
+
+            // Mostrar los datos filtrados
+            mostrarGrupos(datosFiltrados, lideres);
+        }
+
+        // Llama a la función cuando la página cargue
+        window.onload = () => {
+            cargarGrupos();
+
+            // Agregar evento de escucha al campo de búsqueda
+            document.getElementById('busquedaRapida').addEventListener('input', filtrarDatos);
+        };
+    </script>
+</body>
+</html>

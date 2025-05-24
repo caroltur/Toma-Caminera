@@ -1,0 +1,165 @@
+/* Estilos generales */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa; /* Fondo claro */
+    color: #343a40; /* Color de texto oscuro */
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+.containerNuevo {
+    max-width: 1200px; /* Ancho máximo del contenido */
+    width: fit-content;
+    margin: 0 auto; /* Centrado */
+    padding: 20px;
+    background-color: #ffffff; /* Fondo blanco para el contenido */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    border-radius: 8px; /* Bordes redondeados */
+}
+
+h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #007bff; /* Azul principal */
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Tabla de grupos */
+.tableGrupos {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+
+.tableGrupos th,
+.tableGrupos td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #dee2e6; /* Borde inferior claro */
+}
+
+.tableGrupos th {
+    background-color: #007bff; /* Azul para encabezados */
+    color: #ffffff; /* Texto blanco */
+    font-weight: bold;
+    text-transform: uppercase; /* Convertir texto a mayúsculas */
+    letter-spacing: 1px; /* Espaciado entre letras */
+}
+
+.tableGrupos tbody tr:hover {
+    background-color: #f1f1f1; /* Resaltado al pasar el mouse */
+}
+
+/* Filas entregadas */
+.fila-entregada {
+    background-color: #8effa8; /* Verde claro */
+    color: #155724; /* Texto oscuro */
+}
+
+/* Botón Entregado */
+.btn-success {
+    background-color: #2835a7; /* Verde para botones */
+    color:white;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.btn-success:hover {
+    background-color: #218838; /* Verde más oscuro al pasar el mouse */
+}
+
+/* Input de búsqueda */
+#busquedaRapida {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ced4da; /* Borde gris claro */
+    border-radius: 4px; /* Bordes redondeados */
+    transition: border-color 0.3s ease;
+}
+
+#busquedaRapida:focus {
+    border-color: #007bff; /* Cambia el borde al enfocar */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Sombra al enfocar */
+}
+
+/* Input de novedades */
+.input-group .form-control {
+    width: 45%;
+    padding: 1% 1%;
+     /* Elimina el borde derecho para que se vea unido */
+    border-radius: 4px 0 0 4px; /* Redondea solo los bordes izquierdos */
+}
+
+.input-group .btn {
+    padding: 2% 1%;
+    border-radius: 0 4px 4px 0; /* Redondea solo los bordes derechos */
+}
+
+/* Estado (Entregado/Pendiente) */
+#tablaGrupos span {
+    font-weight: bold;
+}
+
+#tablaGrupos span.text-muted {
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+/* Paginación (si decides agregarla en el futuro) */
+.pagination {
+    display: flex;
+    justify-content: left;
+    margin-top: 20px;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.pagination .page-link {
+    color: #007bff;
+    transition: background-color 0.3s ease;
+}
+
+.pagination .page-link:hover {
+    background-color: #007bff;
+    color: #ffffff;
+}
+
+/* Respuesta adaptativa */
+@media (max-width: 768px) {
+    .containerNuevo {
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    .tableGrupos th,
+    .tableGrupos td {
+        font-size: 0.9rem;
+        padding: 8px;
+    }
+
+    #busquedaRapida {
+        width: 100%;
+    }
+}
+
+.row {
+    display: flex;
+    align-items: center;
+}
+.col-md-6 {
+    margin-left: 0; /* Asegura que el contenedor esté alineado a la izquierda */
+}
+.align-self-start {
+    align-self: flex-start;
+    width: 50%;
+}
+
